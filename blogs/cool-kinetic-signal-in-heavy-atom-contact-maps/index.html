@@ -1,0 +1,727 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>cool kinetic signal in heavy-atom contact maps</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(204, 121, 47, 1);
+	fill: rgba(204, 121, 47, 1);
+}
+.highlight-yellow {
+	color: rgba(195, 148, 67, 1);
+	fill: rgba(195, 148, 67, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(179, 84, 136, 1);
+	fill: rgba(179, 84, 136, 1);
+}
+.highlight-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(204, 121, 47, 1);
+	fill: rgba(204, 121, 47, 1);
+}
+.block-color-yellow {
+	color: rgba(195, 148, 67, 1);
+	fill: rgba(195, 148, 67, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(179, 84, 136, 1);
+	fill: rgba(179, 84, 136, 1);
+}
+.block-color-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="26e02030-da15-814e-bdf8-fe5591c147f5" class="page sans"><header><h1 class="page-title">cool kinetic signal in heavy-atom contact maps</h1><p class="page-description"></p></header><div class="page-body"><p id="26e02030-da15-8120-9311-c1f5a614280d" class="">Recently, I’ve been thinking about molecular dynamics (MD), specifically in the context of protein-ligand simulations. An interesting question here is as follows: given two randomly sampled snapshots (call them ‘A’ and ‘B’) from a long MD trajectory, do we think they’re kinetically close? Loosely, can we foresee snapshot A evolving into snapshot B over a short (say, between 5-10 ps) period of time?</p><p id="26e02030-da15-8120-a029-ceed2b029a3e" class="">A method that can cheaply answer this question is clearly useful. For example, such a method could be used for validating trajectories produced by generative models (<a href="https://arxiv.org/pdf/2409.17808">which is being attempted</a>). In some capacity, this question has been thoroughly addressed through work on Markov state models (MSMs). This approach takes loads of MD data (often microseconds) for a single complex, calculates a bunch of features (e.g. Kabsch RMSD, dihedrals, etc.), and then uses methods like <a href="http://docs.markovmodel.org/lecture_tica.html">TICA</a> to find ‘maximally slow’ modes i.e. the system’s kinetic basins. However, constructing MSMs requires a <em>lot </em>of MD data-typically at least microseconds. They also don’t directly/fully answer the original question.</p><figure id="26e02030-da15-8101-9f92-e1a601b7a6c0" class="image"><a href="cool%20kinetic%20signal%20in%20heavy-atom%20contact%20maps%2026e02030da15814ebdf8fe5591c147f5/movie_compressed.gif"><img style="width:720px" src="cool%20kinetic%20signal%20in%20heavy-atom%20contact%20maps%2026e02030da15814ebdf8fe5591c147f5/movie_compressed.gif"/></a><figcaption>A short PL simulation.</figcaption></figure><h1 id="26e02030-da15-8132-b381-f2636e7f2fd8" class="">Kinetic Descriptors</h1><p id="26e02030-da15-81cf-a953-e9f93a3e4883" class="">Naturally, we might try to find some feature of a MD snapshot that correlates strongly with its kinetic descriptors. I think a reasonable first guess (and my own) is the RMSD between snapshots (more precisely, <a href="https://en.wikipedia.org/wiki/Kabsch_algorithm">Kabsch RMSD</a> makes sense here to account for any system-wide behavior like translation or rotation). However, there are a lot of intuitive issues with this. For one, this is purely a geometric descriptor; while two frames that look similar <em>might</em> be kinetically close, it doesn’t necessarily have to be the case. As an extreme example, we could consider two different pictures of a ball in the air. Without knowing the velocity of the ball in each picture, we can’t determine if the two balls are kinetically close; one of them could be moving rapidly up while the other is in a dive.</p><p id="26e02030-da15-8193-ad6e-c546fb12e73a" class="">Maybe the right idea, then, is to save instantaneous particle velocities for every frame in a trajectory. This guarantees one more degree of kinetic closeness. However, velocities tend to decorrelate over very short (sub picosecond) timescales in most biomolecular simulations, so they probably won’t be useful for establishing continuity over 5-10 ps jumps. It’s pretty easy to see this mathematically—in the Langevin dynamics model, biomolecular simulations tend to use friction coefficients of roughly 1 ps^(-1). The velocity autocorrelation can be shown to be approximately of the form </p><figure id="26e02030-da15-8171-a9c9-ce1806dd72de" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mo fence="true">&lt;</mo><mi>v</mi><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo><mi>v</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo fence="true">&gt;</mo></mrow><mo>∝</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>γ</mi><mi>t</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\left &lt; v(0)v(t)\right &gt; \propto e^{-\gamma t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">⟨</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mopen">(</span><span class="mord">0</span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mclose delimcenter" style="top:0em;">⟩</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∝</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8436em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8436em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathnormal mtight" style="margin-right:0.05556em;">γ</span><span class="mord mathnormal mtight">t</span></span></span></span></span></span></span></span></span></span></span></span></span></div></figure><p id="26e02030-da15-813e-a93f-d744049c00f0" class="">where <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi></mrow><annotation encoding="application/x-tex">\gamma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span></span></span></span></span><span>﻿</span></span> is the friction coefficient. After 5 ps, the correlation is roughly on the order of <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>e</mi><mrow><mo>−</mo><mn>5</mn></mrow></msup><mo>≈</mo><mn>0.007</mn></mrow><annotation encoding="application/x-tex">e^{-5} \approx 0.007</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">5</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.007</span></span></span></span></span><span>﻿</span></span>, and after 10ps, <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>e</mi><mrow><mo>−</mo><mn>10</mn></mrow></msup><mo>≈</mo><mn>0.00005</mn></mrow><annotation encoding="application/x-tex">e^{-10} \approx 0.00005</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">10</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.00005</span></span></span></span></span><span>﻿</span></span>.</p><p id="26e02030-da15-81b2-8f8b-ca17711825f8" class="">The next idea that occurred to me was using contact-maps: a matrix <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span></span><span>﻿</span></span> with the protein’s heavy atoms on one axis and the ligand’s heavy atoms on the other such that</p><figure id="26e02030-da15-812e-84ad-f721e02bdec9" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>M</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mn>0</mn><mo separator="true">,</mo><mspace width="1em"/><mrow><mtext>if protein atom </mtext><mstyle scriptlevel="0" displaystyle="false"><mi>i</mi></mstyle><mtext> isn’t within </mtext><mstyle scriptlevel="0" displaystyle="false"><mi>ϵ</mi></mstyle><mtext> </mtext><mover accent="true"><mtext>A</mtext><mo>˚</mo></mover><mtext> of ligand atom </mtext><mstyle scriptlevel="0" displaystyle="false"><mi>j</mi></mstyle></mrow></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>M</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mspace width="1em"/><mrow><mtext>if protein atom </mtext><mstyle scriptlevel="0" displaystyle="false"><mi>i</mi></mstyle><mtext> is within </mtext><mstyle scriptlevel="0" displaystyle="false"><mi>ϵ</mi></mstyle><mtext> </mtext><mover accent="true"><mtext>A</mtext><mo>˚</mo></mover><mtext> of ligand atom </mtext><mstyle scriptlevel="0" displaystyle="false"><mi>j</mi></mstyle></mrow></mrow></mstyle></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{cases}
+M_{ij} = 0, \quad \text{if protein atom $i$ isn&#x27;t within $\epsilon$ Å of ligand atom $j$} \\ 
+M_{ij} = 1, \quad \text{if protein atom $i$ is within $\epsilon$ Å of ligand atom $j$}
+\end{cases}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3em;vertical-align:-1.25em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord text"><span class="mord">if protein atom </span><span class="mord mathnormal">i</span><span class="mord"> isn’t within </span><span class="mord mathnormal">ϵ</span><span class="mord"> </span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9468em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord">A</span></span><span style="top:-3.2523em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.375em;"><span class="mord">˚</span></span></span></span></span></span></span><span class="mord"> of ligand atom </span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span></span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord text"><span class="mord">if protein atom </span><span class="mord mathnormal">i</span><span class="mord"> is within </span><span class="mord mathnormal">ϵ</span><span class="mord"> </span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9468em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord">A</span></span><span style="top:-3.2523em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.375em;"><span class="mord">˚</span></span></span></span></span></span></span><span class="mord"> of ligand atom </span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div></figure><p id="26e02030-da15-811e-a123-f9f61aadcb19" class="">where <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ϵ</span></span></span></span></span><span>﻿</span></span> is some cutoff radius fed as input. This is the most barebones construction of a contact map; binary mappings instead of something continuous as well as a fixed cutoff radius instead of something more principled, e.g. based on the interacting atoms’ vdW radii. Importantly, contact maps capture the system topology. The evolution of protein-ligand systems is strongly dependent on hydrogen bonds, vdW interactions, and short-range electrostatics. Contact-maps should capture some amount of this, whereas RMSD probably does so to a lesser degree. It’s worth keeping in mind that there are still lots of important physical interactions that we miss with basic contact maps: water bridges, long range electrostatics, etc., so this definitely isn’t a solution to the original question on its own. Still, in playing around with contact maps for medium-length (several nanosecond) protein-ligand simulations, I thought the resulting data was pretty cool.</p><h1 id="26e02030-da15-8149-85b8-cde9a6d01224" class="">Contact Maps as a Gate</h1><p id="26e02030-da15-815d-afe7-da5a0e46f670" class="">My idea was to create some sort of gating threshold with contact maps; given two frames, we calculate their contact maps <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mn>1</mn></msub><mo separator="true">,</mo><mtext> </mtext><msub><mi>C</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">C_1, \, C_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> and define their distance via some metric. I used Jaccard distance. Then, if their distance is below some threshold, we consider the two frames to be candidates for kinetic closeness. But establishing this threshold requires some data. A fixed distance threshold clearly wouldn’t work; consider the case of a large, pocket-nestling drug versus a small, surface-binder:</p><figure id="26e02030-da15-8183-903f-d84bcd528644" class="image"><a href="cool%20kinetic%20signal%20in%20heavy-atom%20contact%20maps%2026e02030da15814ebdf8fe5591c147f5/movie_compressed_3.gif"><img style="width:709.9644775390625px" src="cool%20kinetic%20signal%20in%20heavy-atom%20contact%20maps%2026e02030da15814ebdf8fe5591c147f5/movie_compressed_3.gif"/></a><figcaption>A large binder; SMILES: Nc1ncnc2c1ncn2[C@@H]1O<a href="https://www.notion.so/CO%5BP@@%5D(=O)(O)O%5BP@%5D(=O)(O)C(F)(F)CCCC(F)(F)P(=O)(O)O">C@H</a><a href="https://www.notion.so/O">C@@H</a>[C@H]1O</figcaption></figure><figure id="26e02030-da15-81b0-aba2-cccac6dc9bed" class="image"><a href="cool%20kinetic%20signal%20in%20heavy-atom%20contact%20maps%2026e02030da15814ebdf8fe5591c147f5/movie_compressed_4.gif"><img style="width:709.9644775390625px" src="cool%20kinetic%20signal%20in%20heavy-atom%20contact%20maps%2026e02030da15814ebdf8fe5591c147f5/movie_compressed_4.gif"/></a><figcaption>A small binder; SMILES: [C-]#[N+]CCCC</figcaption></figure><p id="26e02030-da15-812c-ab96-dd147fb83a89" class="">Two consecutive snapshots from the former would likely have low Jaccard distances, whereas two consecutive snapshots from the latter could have much higher Jaccard distance. Thus, it makes sense to determine such a threshold based on some ‘calibration’ MD data for a given complex. From this data, we could consider sampling pairs of consecutive frames, then pairs with a frame in between, then two pairs in between, etc., and calculate the average Jaccard distance for each of these groups. We should also calculate the average Jaccard distance for a set of pairs that’s completely randomly generated to serve as a decorrelation baseline.</p><p id="26e02030-da15-8176-98d4-e47f8663667e" class="">I think it’s good practice to think about the expected behavior before doing the aforementioned analysis on some trajectories. Kinetic-related correlations in Langevin dynamics, as previously touched on, tend to decay exponentially. So, we might hope that the Jaccard distance plotted as a function of time between sampled frames should yield something approximately proportional (excluding a positive, vertical offset) to <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mi>C</mi><msup><mi>e</mi><mrow><mo>−</mo><mi>k</mi><mi>x</mi></mrow></msup></mrow><annotation encoding="application/x-tex">-Ce^{-kx}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9324em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span><span class="mord mathnormal mtight">x</span></span></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>, where <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo separator="true">,</mo><mi>k</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">C, k &gt; 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></span><span>﻿</span></span>.</p><figure id="26f02030-da15-80b8-a7a7-ce90bb80eed2" class="image"><a href="cool%20kinetic%20signal%20in%20heavy-atom%20contact%20maps%2026e02030da15814ebdf8fe5591c147f5/0001_long_contact_analysis.png"><img style="width:709.9928588867188px" src="cool%20kinetic%20signal%20in%20heavy-atom%20contact%20maps%2026e02030da15814ebdf8fe5591c147f5/0001_long_contact_analysis.png"/></a></figure><figure id="26f02030-da15-8098-aba4-d3a4c20ef5a9" class="image"><a href="cool%20kinetic%20signal%20in%20heavy-atom%20contact%20maps%2026e02030da15814ebdf8fe5591c147f5/0002_long_contact_analysis.png"><img style="width:709.9928588867188px" src="cool%20kinetic%20signal%20in%20heavy-atom%20contact%20maps%2026e02030da15814ebdf8fe5591c147f5/0002_long_contact_analysis.png"/></a><figcaption>Both of these plots use 40 sampled pairs per time lag (and for the random baseline). Each plot is for a different system (to be referred to as systems 1 and 2, from top to bottom), and the construction is as specified above. Both systems were simulated for 6 ns = 6000 ps, and the distance cutoff was 4.6 Å.</figcaption></figure><p id="26e02030-da15-819f-b97b-e09c93b31524" class="">And, fortunately, this is what we see! Personally, I think it’s very cool that such a simple model captures such good signal, especially since this approach implements a super rudimentary contact map.</p><h1 id="26f02030-da15-805e-8e67-ebc15ac952b1" class="">Comparisons to RMSD</h1><p id="26f02030-da15-8078-a97d-e3ffb251c1c0" class="">All that is clear from this is that contact maps carry good kinetic signal. I’m definitely not making a direct comparison of this approach to something like RMSD to answer the original question. Doing so would require extensive benchmarking across lots of different systems. Moreover, these systems would have to have lots of existing MD data in order to construct a MSM or something similar to actually verify kinetic similarity more rigorously.</p><p id="26f02030-da15-8016-80c5-f9bdef48667e" class="">Of course, while contact maps might intuitively seem more effective, as previously mentioned, we fail to take lots of important data into account with them. And, even though a low RMSD between frames doesn’t guarantee key bonds and vdW interactions are present in both, it makes sense to think that there will be a strong correlation.</p><p id="26f02030-da15-80aa-849b-c5c71b9e0813" class="">This being said, it’s illuminating to directly compare RMSD and contact map distance. I did this by plotting the two against each other for every pair of frames 10ps apart from each of the two trajectories studied above:</p><figure id="26f02030-da15-8055-ac95-e83a47bffc7f" class="image"><a href="cool%20kinetic%20signal%20in%20heavy-atom%20contact%20maps%2026e02030da15814ebdf8fe5591c147f5/0001_long_correlation_5.0_cutoff.png"><img style="width:709.9928588867188px" src="cool%20kinetic%20signal%20in%20heavy-atom%20contact%20maps%2026e02030da15814ebdf8fe5591c147f5/0001_long_correlation_5.0_cutoff.png"/></a><figcaption>System 1, contact map cutoff = 5.0 Å</figcaption></figure><figure id="26f02030-da15-80ae-9fe7-cc58d28be53e" class="image"><a href="cool%20kinetic%20signal%20in%20heavy-atom%20contact%20maps%2026e02030da15814ebdf8fe5591c147f5/0002_long_correlation_5.0_cutoff.png"><img style="width:709.9928588867188px" src="cool%20kinetic%20signal%20in%20heavy-atom%20contact%20maps%2026e02030da15814ebdf8fe5591c147f5/0002_long_correlation_5.0_cutoff.png"/></a><figcaption>System 2, contact map cutoff = 5.0 Å</figcaption></figure><p id="26f02030-da15-80ff-8a57-cd8c925ffe48" class="">This surprised me! The poor correlation between the two descriptors is a good thing—it strongly suggests that, at least for this small sample of two systems, contact map distance and RMSD encode <em>different</em> kinetic information about the system. For lightweight trajectory validation or frame stitching, contact maps look like a surprisingly effective proxy—that’s pretty exciting!</p><h1 id="26f02030-da15-8070-92b4-f07ca8bfc89b" class="">Appendix: Contact Map Code</h1><p id="27302030-da15-80fb-a19a-d6672e8dd5a6" class="">The contact map construction code uses standard NumPy built-ins.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27302030-da15-8039-8458-d25a1f6c25cd" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">def contact_map_diff(u, frameA, frameB, ligand_resname=&quot;LIG&quot;, cutoff=4.0):
+    ligand = u.select_atoms(f&quot;resname {ligand_resname} and not name H*&quot;)
+    pocket = u.select_atoms(&quot;protein and not name H*&quot;)
+
+    contact_maps = []
+    for frame in [frameA, frameB]:
+        u.trajectory[frame]
+        LA, PA = ligand.positions, pocket.positions
+
+        # numpy broadcasting for fast pairwise calculations
+
+        LA_expanded = LA[:, None, :] # shape: (N_lig, 1, 3)
+        PA_expanded = PA[None, :, :] # shape: (1, N_poc, 3)
+        distances = np.linalg.norm(LA_expanded - PA_expanded, axis=-1) # shape: (N_lig, N_poc)
+        contact_maps.append(distances &lt; cutoff)
+
+    dA, dB = contact_maps[0].ravel(), contact_maps[1].ravel()
+    union = np.count_nonzero(dA | dB)
+    if union == 0:
+        return 0.0
+    inter = np.count_nonzero(dA &amp; dB)
+    return float(1.0 - inter/union)</code></pre><p id="27302030-da15-80fe-a3cb-e56d87e4326b" class="">And the random baseline was generated as follows:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27802030-da15-80dd-a924-cb1b2b8adc58" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">n_bootstrap = 30
+bootstrap_means = []
+
+for _ in range(n_bootstrap):
+    random_diffs = []
+    for _ in range(num_samps):  
+        frame1, frame2 = np.random.choice(range(0, num_frames - 1), size=2, replace=False)
+        diff = contact_map_diff(traj1, frame1, frame2, cutoff=4.6)
+        random_diffs.append(diff)
+    bootstrap_means.append(np.mean(random_diffs))
+
+random_baseline = np.mean(bootstrap_means)
+random_stderr = np.std(bootstrap_means) / np.sqrt(n_bootstrap)</code></pre><p id="26f02030-da15-8075-bcd1-e0ec4d2906b9" class="">Where <code>num_frames</code>  is the number of frames in the trajectory.</p><p id="27802030-da15-8098-b42d-e57439d0359a" class="">
+</p><p id="27802030-da15-8080-876d-f7758e1e1872" class=""><em>Special thanks to Arnav Singhal for reading drafts of this.</em></p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
