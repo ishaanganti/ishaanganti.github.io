@@ -301,11 +301,40 @@
       width: 100% !important;
       display: block;
     }
+    /* ===== BLOG HEADER NORMALIZATION ===== */
+
+    /* Left-align the Pandoc title block */
+    header {
+    text-align: left !important;
+    margin-bottom: 3em;
+    }
+
+    /* Make Pandoc title look like blog title */
+    header h1.title {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+    }
+
+    /* De-emphasize author/date like blog */
+    header .author {
+    opacity: 0.6;
+    font-size: 0.95em;
+    }
+
+    header .date {
+    opacity: 0.5;
+    font-size: 0.9em;
+    }
 
   </style>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 </head>
 <body>
+    <a href="../../blog-list.html">← Back to blog list</a>
+
 <header id="title-block-header">
 <h1 class="title">Numerically Modeling A 1D
 Bosonic Gas</h1>
