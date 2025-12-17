@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Ishaan Ganti Brown University" />
+  <meta name="dcterms.date" content="2025-12-16" />
+  <title>APMA 2550 Final Project: Numerically Modeling A 1D Bosonic Gas</title>
+  <style>
+    /* cspell:disable-file */
+    /* webkit printing magic: print all background colors */
+    html {
+      -webkit-print-color-adjust: exact;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    @media only screen {
+      body {
+        margin: 2em auto;
+        max-width: 900px;
+        color: rgb(55, 53, 47);
+      }
+    }
+
+    body {
+      line-height: 1.5;
+      white-space: pre-wrap;
+      background-color: #fdfdf5;
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+
+    a,
+    a.visited {
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    h1,
+    h2,
+    h3 {
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+
+    h1 {
+      font-size: 1.875rem;
+      margin-top: 1.875rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      margin-top: 1.25rem;
+    }
+
+    p {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    figure {
+      margin: 1.25em 0;
+      page-break-inside: avoid;
+    }
+
+    figcaption {
+      opacity: 0.5;
+      font-size: 85%;
+      margin-top: 0.5em;
+    }
+
+    hr {
+      background: transparent;
+      display: block;
+      width: 100%;
+      height: 1px;
+      visibility: visible;
+      border: none;
+      border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+    }
+
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid rgba(55, 53, 47, 0.09);
+    }
+
+    table {
+      border-left: none;
+      border-right: none;
+    }
+
+    th,
+    td {
+      font-weight: normal;
+      padding: 0.25em 0.5em;
+      line-height: 1.5;
+      min-height: 1.5em;
+      text-align: left;
+    }
+
+    th {
+      color: rgba(55, 53, 47, 0.6);
+    }
+
+    ol, ul {
+      margin: 0;
+      margin-block-start: 0.6em;
+      margin-block-end: 0.6em;
+      padding-inline-start: 1.7em;
+    }
+
+    li > ol:first-child,
+    li > ul:first-child {
+      margin-block-start: 0.6em;
+    }
+
+    ul > li {
+      list-style: disc;
+      padding-left: 0.1em;
+    }
+
+    ol > li {
+      padding-left: 0.2em;
+    }
+
+    blockquote {
+      font-size: 1em;
+      margin: 1em 0;
+      padding-left: 1em;
+      border-left: 3px solid rgb(55, 53, 47);
+    }
+
+    code {
+      background: rgba(135, 131, 120, 0.15);
+      border-radius: 3px;
+      padding: 0.2em 0.4em;
+      font-size: 85%;
+      tab-size: 2;
+      color: #eb5757;
+      font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
+    }
+
+    pre {
+      background: rgba(135, 131, 120, 0.15);
+      border-radius: 3px;
+      padding: 1em;
+      margin: 1em 0;
+      overflow: auto;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      font-size: 100%;
+      color: inherit;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+
+    header {
+      margin-bottom: 2em;
+      text-align: center;
+    }
+
+    figure img {
+      width: 100%;
+      height: auto;
+    }
+
+    /* Remove white-space: pre-wrap that causes indentation issues */
+    body {
+      line-height: 1.5;
+      white-space: normal; /* Changed from pre-wrap */
+      background-color: #fdfdf5;
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+
+    /* Ensure paragraphs don't inherit pre-wrap behavior */
+    p {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+      white-space: normal;
+    }
+
+    /* Outer figure: full-width container */
+    figure {
+      width: 100%;
+      margin: 1.25em 0;
+      page-break-inside: avoid;
+      text-align: center;
+    }
+
+    /* When a figure contains multiple figures, use flex */
+    figure:has(> figure) {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    /* Inner figures: split width evenly */
+    figure > figure {
+      width: 49%;
+      margin: 0;
+    }
+
+    /* Images fill their container */
+    figure > figure img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Caption spans full width below */
+    figure > figcaption {
+      flex-basis: 100%;
+      margin-top: 0.5em;
+      opacity: 0.5;
+      font-size: 85%;
+      text-align: center;
+    }
+
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-top: 0;
+      margin-bottom: 0.75em;
+    }
+
+    .author {
+      opacity: 0.6;
+    }
+
+    .date {
+      opacity: 0.5;
+      font-size: 0.9em;
+    }
+
+    .header-section-number {
+      margin-right: 0.5em;
+    }
+
+    .footnotes {
+      margin-top: 3em;
+      border-top: 1px solid rgba(55, 53, 47, 0.09);
+      padding-top: 1em;
+      font-size: 0.9em;
+    }
+
+    .footnote-ref {
+      text-decoration: none;
+      color: #0066cc;
+    }
+
+    .footnote-back {
+      text-decoration: none;
+    }
+
+    
+
+    @media only print {
+      img {
+        max-height: 100vh;
+        object-fit: contain;
+      }
+    }
+
+    @page {
+      margin: 1in;
+    }
+
+    /* Exception: do NOT group this specific figure */
+    #fig\:lit-comparison > figure {
+      width: 100% !important;
+      display: block;
+    }
+
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Numerically Modeling A 1D
+Bosonic Gas</h1>
+</header>
+<h1 data-number="0" id="Introduction"><span
+class="header-section-number">0</span> Introduction</h1>
+<p>This past semester, I took a class on numerical algorithms for solving
+  partial differential equations (PDEs). The course's final project was to implement a solver
+  for our choice of a non-linear PDE. I thought my report and code were pretty good, so I
+  spam-prompted ChatGPT to convert my TeX file to html; here it is!</p>
+
+<h1 data-number="1" id="description-and-origins"><span
+class="header-section-number">1</span> Description and Origins</h1>
+<h2 data-number="1.1" id="bose-einstein-condensate"><span
+class="header-section-number">1.1</span> Bose-Einstein Condensate</h2>
+<p>Bose-Einstein condensate (BEC) was first theorized in 1925 by Albert
+Einstein. BEC is a state of matter formed by cooling a gas of bosons
+(integer spin particles) to near absolute 0. It exhibits lots of
+interesting macroscopic quantum mechanical behavior—for example,
+rotating a BEC forms a lattice of swirling vortices, i.e. quantization
+of circulation.</p>
+<p>It’s worth understanding why cooling a bosonic gas in particular
+yields such rich dynamics. Bosons obey Bose-Einstein statistics, which
+importantly allow for an arbitrary amount of bosons in a system to
+occupy same energy states. This is in stark contrast to fermions, which
+follow the Pauli exclusion principle. Pauli exclusion prevents two
+identical fermions from occupying the same quantum state. Einstein’s
+hypothesis was that if a gas of bosonic atoms was cooled enough (i.e.
+removing thermal energy from the gas), they would all fall into the
+lowest energy quantum state. BEC was experimentally synthesized in 1995
+by Eric Cornell, Carl Wieman, and coworkers.</p>
+<h2 data-number="1.2" id="grosspitaevskii-equation"><span
+class="header-section-number">1.2</span> Gross–Pitaevskii Equation</h2>
+<p>To model BEC in ultracold (<span class="math inline">\(&lt; 1
+\mu\)</span>K) temperatures, one typically employs the Gross-Pitaevskii
+equation (GPE), a type of non-linear Schrodinger equation: <span
+class="math display">\[\begin{gathered}
+    i\hbar \frac{\partial \psi(\vec{r})}{\partial t} =
+    \left( -\frac{\hbar^2\nabla^2}{2m}
+    +V(\vec{r}) + g|\psi(\vec{r})|^2  \right)
+    \psi(\vec{r})
+\end{gathered}\]</span> In experiments, taking the external potential to
+be a harmonic trap is standard. Then, nondimensionalizing and reducing
+the problem to one dimension gives <span
+class="math display">\[\begin{gathered}
+    i \partial_t \psi(x, t) =
+    \left( -\frac{1}{2} \partial_{x x} + \frac{\kappa}{2}x^2 +
+    g|\psi(x, t)|^2\right) \psi(x, t)
+\end{gathered}\]</span> where we’ve set <span
+class="math inline">\(\hbar, m = 1\)</span>.</p>
+<h1 data-number="2" id="analytical-solutions"><span
+class="header-section-number">2</span> Analytical Solutions</h1>
+<p>General closed-form solutions are not known for the GPE. However, we
+can consider specific limits to benchmark against. I am omitting the
+<span class="math inline">\(\kappa = 0\)</span> soliton solution due to
+my choice of eigenbasis, which is described in detail later on.</p>
+<h2 data-number="2.1" id="quantum-harmonic-oscillator-limit"><span
+class="header-section-number">2.1</span> Quantum Harmonic Oscillator
+Limit</h2>
+<p>Putting <span class="math inline">\(g = 0\)</span> recovers the
+linear Schrodinger equation for the quantum harmonic oscillator (QHO).
+We can isolate the spatial dependence with an ansatz of the form <span
+class="math inline">\(\psi(x, t) = e^{-i \omega t} u(x)\)</span>, which
+yields <span class="math display">\[\begin{gathered}
+    \omega e^{-i \omega t} u(x) =
+    \left( -\frac{1}{2} \partial_{x x} + \frac{\kappa}{2}x^2 \right)
+    e^{-i\omega t} u(x) \implies
+    \omega u(x) =
+    \left( -\frac{1}{2} \partial_{x x} + \frac{\kappa}{2}x^2 \right)
+u(x)
+\end{gathered}\]</span> This is an eigenvalue problem with known
+closed-form solutions: <span class="math display">\[\begin{gathered}
+    \omega_n = \sqrt{\kappa} \left( n + \frac{1}{2} \right), \quad
+    u_n(x) = \text{Hermite-Gaussian Mode}
+    \label{eq:qho-sol}
+\end{gathered}\]</span></p>
+<h2 data-number="2.2" id="perturbative-interaction-treatment"><span
+class="header-section-number">2.2</span> Perturbative Interaction
+Treatment</h2>
+<p>It would be nice to have some sort of analytical benchmark without
+taking one of <span class="math inline">\(\kappa\)</span> or <span
+class="math inline">\(g\)</span> to 0. One way to try and resolve this
+is by taking <span class="math inline">\(g\)</span> small but non-zero.
+Observe that the effective potential <span
+class="math display">\[\begin{aligned}
+    V = \frac{\kappa}{2}x^2 + |\psi(x)|^2
+\end{aligned}\]</span> always evolves <span
+class="math inline">\(\psi\)</span> into an even function provided <span
+class="math inline">\(\psi(x, 0)\)</span> is even. Hence, consider the
+initial state <span class="math inline">\(\psi(x, 0) = u_0(x)\)</span>.
+The even-indexed QHO modes are even, so this potential only allows for
+transitions between <span class="math inline">\(u_0, u_2, u_4,\)</span>
+etc. The transition between adjacent even eigenfunctions is <span
+class="math inline">\(O(g)\)</span>, so for small <span
+class="math inline">\(g\)</span> and short time, we can approximate
+<span class="math display">\[\begin{aligned}
+    \psi(x, t) \approx a_0(t)u_0(x) + a_2(t)u_2(x), \quad
+    a_0(t) \approx 1, \, a_2(t) \ll 1
+\end{aligned}\]</span> It follows that <span
+class="math display">\[\begin{aligned}
+    |\psi(x, t)|^2 &amp;\approx |a_0|^2|u_0|^2 + |a_2|^2|u_2|^2 + 2
+    \Re\left( a_0^*a_2u_0u_2 \right) \nonumber \\ &amp;=
+    1 + 2\Re\left( a_0^*a_2u_0u_2 \right) + O(|a_2|^2)
+    \label{eq:breathing}
+\end{aligned}\]</span> There are a few important features that Eq. <a
+href="#eq:breathing" data-reference-type="ref"
+data-reference="eq:breathing">[eq:breathing]</a> possesses. For one, the
+second term implies a ‘pulse’ with frequency <span
+class="math inline">\(\omega_2 - \omega_0 = 2\sqrt{\kappa}\)</span>. We
+can use this period test as a benchmark for the numerical algorithm.</p>
+<h2 data-number="2.3" id="strongly-interacting-bosons"><span
+class="header-section-number">2.3</span> Strongly Interacting
+Bosons</h2>
+<p>In the Thomas-Fermi approximation, one considers strong interactions
+between the bosonic atoms <span class="math inline">\((g \gg1)\)</span>.
+It is known that this allows for the approximation <span
+class="math inline">\(-\frac{1}{2}\partial_{x x} \approx 0\)</span>.
+Then, the time-independent equation reduces to an algebraic one that
+yields <span class="math display">\[\begin{aligned}
+    \omega f(x) = \left ( \frac{\kappa}{2}x^2 +
+    g|f(x)|^2
+    \right )f(x) \implies |f|^2 =
+    \frac{1}{g} \left( \omega - \frac{\kappa}{2}x^2 \right)
+\end{aligned}\]</span> This yields complex magnitude for <span
+class="math inline">\(|x| \to \infty\)</span>; thus, we require the
+argument of the square root to be nonnegative. The reasonable path
+forward here is to only consider this approximation on the spatial
+interval for which the magnitude is real and assume the result is the
+limiting value (0) elsewhere: <span
+class="math display">\[\begin{aligned}
+    f =
+    \begin{cases}
+        \frac{1}{g} \left( \omega - \frac{\kappa}{2}x^2 \right), \quad
+        &amp;|x| \le R \\
+        0, \quad &amp; |x| &gt; R
+    \end{cases}, \quad
+    R = \sqrt{\frac{2\omega}{\kappa}}
+\end{aligned}\]</span> Note that the normalization condition<a
+href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a>fixes <span
+class="math inline">\(\omega\)</span> in terms of <span
+class="math inline">\(\kappa\)</span> and <span
+class="math inline">\(g\)</span>, so those are the only free parameters
+in this model (see Appendix A).</p>
+<h1 data-number="3" id="numerical-algorithm"><span
+class="header-section-number">3</span> Numerical Algorithm</h1>
+<p>I will continue to refer to the QHO Hamiltonian as <span
+class="math inline">\(H_0\)</span></p>
+<h2 data-number="3.1" id="algorithm-design-choices"><span
+class="header-section-number">3.1</span> Algorithm Design Choices</h2>
+<p>There are several numerical challenges posed by the GPE’s form.
+Perhaps the largest one is the high frequency of oscillation due to
+<span class="math inline">\(H_0\)</span>. Eq. <a href="#eq:qho-sol"
+data-reference-type="ref" data-reference="eq:qho-sol">[eq:qho-sol]</a>
+implies oscillation frequencies that increase linearly with the number
+of modes included, i.e. the system is very stiff. For this reason, an
+exponential integrator (similar to the final homework assignment) felt
+like a natural approach. This is due to the fact that we discretize our
+system by expanding in the QHO eigenfunctions<a href="#fn2"
+class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>,
+and then propagate the linear part of the GPE <em>exactly</em> using the
+QHO eigenvalues.</p>
+<p>Moreover, using the rotated implicit midpoint procedure covered in
+the homework assignments, we can make this scheme symplectic. Since the
+GPE is used for modeling physics phenomena, this is particularly
+important to ensure conservation of the mass, energy, and volumes in
+phase space. Both of these exponential approaches are second order in
+time (global error <span class="math inline">\(O(h^2)\)</span>).</p>
+<h2 data-number="3.2" id="ode-system-derivation"><span
+class="header-section-number">3.2</span> ODE System Derivation</h2>
+<p>We work with equation <span class="math display">\[\begin{aligned}
+    i \partial_t \psi = H_0\psi + g|\psi|^2 \psi
+\end{aligned}\]</span> We approximate <span
+class="math inline">\(\psi\)</span> using an expansion in <span
+class="math inline">\(M\)</span> QHO modes <span
+class="math display">\[\begin{aligned}
+    \psi(x, t) \approx \psi_M(x, t) =
+    \sum_{0}^{M-1} c_n(t) u_n(x)
+    \label{eq:disc-psi}
+\end{aligned}\]</span> It will be convenient to write quantities as
+vectors for when we discretize the system: <span
+class="math display">\[\begin{aligned}
+    c(t) = \left [ c_0(t), \ldots, c_{M-1}(t) \right ]^{\top}, \quad
+    u(x) =  \left [ u_0(x), \ldots, u_{M-1}(x) \right ]^{\top} \implies
+    \psi_M(x, t) = c(t)^{\top}u(x)
+\end{aligned}\]</span> We use Galerkin reduction on <a
+href="#eq:disc-psi" data-reference-type="ref"
+data-reference="eq:disc-psi">[eq:disc-psi]</a> by forcing the error
+within the <span class="math inline">\(M\)</span> eigenmodes to be 0,
+i.e. <span class="math display">\[\begin{aligned}
+    \int_{\mathbb{R}} u_n^*(x) \left [
+        i\partial_t \psi_M - H_0 \psi_M - g|\psi_M|^2 \psi_M \right ] \,
+dx = 0
+    \label{eq:galerkin-cond}
+\end{aligned}\]</span> By orthonormality of the QHO eigenfunctions and
+the fact that the eigenfunctions diagonalize <span
+class="math inline">\(H_0\)</span>, Eq. <a href="#eq:galerkin-cond"
+data-reference-type="ref"
+data-reference="eq:galerkin-cond">[eq:galerkin-cond]</a> reduces to
+<span class="math display">\[\begin{aligned}
+    \dot{c}_n(t) &amp;= -i\omega_n c_n(t) + N_n(c(t)), \quad
+    N_n(c(t)) = -ig \int_{\mathbb{R}} u_n^*(x) |\psi_M|^2\psi_M \, dx
+\end{aligned}\]</span> Notice that the nonlinearity <span
+class="math inline">\(N_n\)</span> takes in the entire vector <span
+class="math inline">\(c(t)\)</span> as input. In vector form, this can
+be written more concisely like <span
+class="math display">\[\begin{aligned}
+    \dot{c}(t) = Lc(t) + N(c(t))
+    \label{eq:ode-system}
+\end{aligned}\]</span> where <span class="math inline">\(L\)</span> is a
+diagonal matrix whose entries are <span
+class="math inline">\(\{-i\omega_k\}_{k=0}^{M-1}\)</span>.</p>
+<h2 data-number="3.3" id="non-symplectic-scheme-derivation"><span
+class="header-section-number">3.3</span> Non-Symplectic Scheme
+Derivation</h2>
+<p>Call the time-step <span class="math inline">\(h\)</span>. Then, the
+exact solution to Eq. <a href="#eq:ode-system" data-reference-type="ref"
+data-reference="eq:ode-system">[eq:ode-system]</a> is <span
+class="math display">\[\begin{aligned}
+    c(t_m + h) = e^{hL}c(t_m) + \int_{0}^{h} e^{(h-s)L}N(c(t_m + s)) \,
+ds
+\end{aligned}\]</span> For notational convenience, define <span
+class="math inline">\(c^{m} \equiv c(t_m)\)</span> and put <span
+class="math inline">\(A = e^{hL}\)</span>. Moreover, as done in the last
+homework assignment, we approximate the nonlinearity <span
+class="math inline">\(N\)</span> by its midpoint on <span
+class="math inline">\([0, h]\)</span>, giving <span
+class="math display">\[\begin{aligned}
+    c^{m+1} \approx Ac^m +
+    N\left ( c^{m + \frac{1}{2}} \right ) \int_{0}^{h} e^{(h-s)L} \, ds
+\end{aligned}\]</span> Define <span class="math inline">\(\Phi(hL) =
+\frac{1}{h}
+\int_{0}^{h} e^{(h-s)L} \, ds\)</span>. Observe that, since <span
+class="math inline">\(L\)</span> is diagonal, for the <span
+class="math inline">\(n\)</span>th mode we have <span
+class="math display">\[\begin{aligned}
+    A_n = e^{-i\omega_n h}, \quad
+    \Phi_n(hL) =
+    \frac{e^{-i\omega_nh}-1}{-i\omega_n h} = \frac{A_n-1}{-i\omega_n h}
+\end{aligned}\]</span> Thus, the complete scheme for the <span
+class="math inline">\(n\)</span>th mode is given by <span
+class="math display">\[\begin{aligned}
+    \begin{dcases}
+        c_n^{m + \frac{1}{2}} = \frac{c_n^{m} + c_n^{m+1}}{2} \\
+        c_n^{m+1} = e^{-i\omega_n h}c^m_n -
+        \left( c_n^{m + \frac{1}{2}} \right) (h)
+        \left( \frac{e^{-i\omega_n h} - 1}{i\omega_n h} \right)
+    \end{dcases}
+\end{aligned}\]</span> Which is implicit. I handled this with a
+fixed-point iteration. Below is the some of the core logic, adapted from
+my code (some comments and type annotations removed):</p>
+<pre style="mypython" data-caption="Non-Symplectic Integrator"><code>def precompute_linear_coefficients(num_modes, spring_constant, dt) -&gt; tuple:
+    kappa    = spring_constant
+    n        = np.arange(num_modes)
+    omega    = np.sqrt(kappa) * (n + 0.5)
+    lamda    = -1j * omega                          
+    expo_arg = lamda * dt                           
+
+    A = np.exp(expo_arg)                            
+    Phi = (A - 1.0) / expo_arg                      # see paper
+
+    return omega, A, Phi
+
+def exp_midpoint_step(coeffs_n, A, Phi, U, U_conj, weights, g, dt, tol, max_iter) -&gt; np.ndarray:
+    # initial guess: linear evolution
+    c_guess = A * coeffs_n  # elementwise
+
+    for _ in range(max_iter):
+        # midpoint coefficients
+        c_mid = 0.5 * (coeffs_n + c_guess)
+        # nonlinear term at the current midpoint guess, N(c_mid)
+        N_mid = compute_nonlinearity(c_mid, U, U_conj, weights, g)
+        # do expo midpoint update
+        c_new = A * coeffs_n + dt * Phi * N_mid
+        err = np.max(np.abs(c_new - c_guess))
+        c_guess = c_new
+
+        if err &lt; tol:
+            break
+
+    return c_guess</code></pre>
+<p>The function <code>precompute_linear_coefficients</code> explicitly
+calculates the vectors <span class="math inline">\(A\)</span> and <span
+class="math inline">\(\Phi\)</span> used in our scheme, and then
+<code>exp_midpoint_step</code> uses the resulting vectors to do the
+fixed point iteration for <span class="math inline">\(c^{n +
+1}\)</span>. The vector <code>weights</code> is for the trapezoidal rule
+to approximate integrals.</p>
+<h2 data-number="3.4" id="a-symplectic-scheme"><span
+class="header-section-number">3.4</span> A Symplectic Scheme</h2>
+<p>Crucially, the above scheme is not symplectic. Ideally, we’d want
+symplecticity to conserve things like the system’s mass<a href="#fn3"
+class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>,
+energy, etc. To derive such a scheme, we can proceed in an extremely
+similar manner to homework assignments 8 and 9, essentially forcing the
+implicit midpoint scheme. Start with the exact solution to Eq. <a
+href="#eq:ode-system" data-reference-type="ref"
+data-reference="eq:ode-system">[eq:ode-system]</a> <span
+class="math display">\[\begin{aligned}
+    c^{m + 1} = e^{hL}c^m +
+    \int_{0}^{h} e^{(h-s)L} N(c(t_m + s)) \, ds
+\end{aligned}\]</span> Make a change of variables <span
+class="math inline">\(\tau = s - \frac{h}{2}\)</span> to ‘move into the
+rotating frame’ <span class="math display">\[\begin{aligned}
+    c^{m+1} = e^{hL} c^m +
+    \int_{-h / 2}^{h / 2}e^{(h / 2 - \tau)L}  N(c(t_{m + \frac{1}{2}} +
+\tau)) \,
+    d\tau =
+    e^{hL}c^m + e^{hL / 2} \int_{-h / 2}^{h / 2}
+    e^{-\tau L }   N(c(t_{m + \frac{1}{2}} + \tau)) \,
+    d\tau
+\end{aligned}\]</span> Define rotated frame variable <span
+class="math display">\[\begin{aligned}
+    r(\tau) = e^{-\tau L}c(t_{m + \frac{1}{2}} + \tau) \implies
+    c(t_{m + \frac{1}{2}} + \tau) = e^{\tau L} r(\tau)
+\end{aligned}\]</span> Moreover, this gives <span
+class="math display">\[\begin{aligned}
+    c^m = e^{-hL / 2}r(-h / 2), \quad
+    c^{m+1} = e^{hL / 2}r(h / 2)
+\end{aligned}\]</span> We approximate the midpoint as the average of the
+above two values <span class="math display">\[\begin{aligned}
+    r(0) \approx \frac{1}{2}
+    \left( r(-h / 2) + r(h / 2) \right) =
+    \frac{1}{2}\left( e^{hL / 2}c^m + e^{-hL / 2}c^{m+1} \right)
+    \label{eq:rotated-midpoint}
+\end{aligned}\]</span> This is precisely our rotated midpoint.
+Approximating the nonlinearity at this point, we have <span
+class="math display">\[\begin{aligned}
+    c^{m+1} \approx
+    e^{hL}c^m + e^{hL / 2}N\left( c^{m + \frac{1}{2}}_{\text{rot}}
+    \right) \int_{-h / 2}^{h / 2} e^{-\tau L } \, d\tau =
+    e^{hL}c^m + e^{hL / 2}N\left( c^{m + \frac{1}{2}}_{\text{rot}}
+    \right) h\text{sinc}\left( \frac{h\Omega}{2} \right)
+\end{aligned}\]</span> where <span class="math inline">\(\Omega\)</span>
+is a diagonal matrix whose entries are <span
+class="math inline">\(\{\omega_k\}_{k=0}^{M-1}\)</span>. This scheme is
+also implicit, which I again handled via a fixed-point iteration. The
+code essentially exactly parallels the non-symplectic code, so I don’t
+feel it’s worth going over.</p>
+<h2 data-number="3.5" id="further-implementation-specifics"><span
+class="header-section-number">3.5</span> Further Implementation
+Specifics</h2>
+<p>I vectorized calculations for speed—barring this, most of the code is
+similar to what we’ve done before. However, I had to take into account
+that the QHO eigenfunctions are only orthogonal on <span
+class="math inline">\([-\infty, \infty]\)</span>. But in my code, I can
+only deal with a finite interval. So, I worked over the interval <span
+class="math inline">\([-L, L]\)</span>. To ensure orthonormality over
+the interval, it’s worth recalling the shape of the eigenfunctions: the
+<span class="math inline">\(n\)</span>th eigenfunction has <span
+class="math inline">\(n\)</span> nodes that spread out like a parabola
+centered about the <span class="math inline">\(y\)</span>-axis, and the
+Gaussian factor gradually 0s out the function as <span
+class="math inline">\(|x|\)</span> grows. Thus, for approximate
+orthogonality to hold, we need the largest mode’s eigenfunction to be
+approximately <span class="math inline">\(0\)</span> for <span
+class="math inline">\(x \in (-\infty, -L) \cup (L, \infty)\)</span>.</p>
+<p>Moreover, I repeatedly use a matrix <span
+class="math inline">\(U\)</span> in my code; this is a matrix with shape
+<code>(num_points, num_modes)</code>. <span
+class="math inline">\(U_{ij}\)</span> is the <span
+class="math inline">\(j\)</span>th eigenfunction evaluated at <span
+class="math inline">\(x_i\)</span>, i.e. <span
+class="math inline">\(u_j(x_i)\)</span>. This matrix is useful because
+it allows for easily projecting and reconstructing wavefunctions. For
+example, multiplying the eigenbasis representation of a wavefunction
+from the left by <span class="math inline">\(U\)</span> yields the
+spatial representation. Analogously, mutiplying the spatial
+representation of a wavefunction from the left by <span
+class="math inline">\(U^{\dag}\)</span> yields the eigenbasis
+representation.</p>
+<pre style="mypython"
+data-caption="Projection and Reconstruction Helpers"><code>def reconstruct_fn(coefficients, U) -&gt; np.ndarray:
+    # ensuring shapes agree
+    if(U.shape[1] != coefficients.shape[0]):
+        print(&quot;The basis matrix shape and the coefficient vector shape are incompatible.&quot;)
+        return 
+
+    return U @ coefficients # shape: (num_points)
+
+def deconstruct_fn(fn, U_conj, weights) -&gt; np.ndarray:
+    weighted_fn  = fn * weights             # elementwise multiplication
+    coefficients = U_conj.T @ weighted_fn   # projection
+    
+    return coefficients</code></pre>
+<p>The core driver code for the non-symplectic integrator is as follows
+(there’s virtually no difference between this driver and the symplectic
+driver):</p>
+<pre style="mypython" data-caption="Numerical Algorithm Driver"><code>def evolve_gpe_midpoint(psi0_x, x, w, U, U_conj, spring_constant, g, dt, num_steps, target_norm = 1.0, store_every = 10) -&gt; tuple:
+    &quot;&quot;&quot;
+    Evolve an initial wavefunction using exponential-midpoint
+    in the QHO basis, returning snapshots of the wavefunction
+    and its norms over time.
+    &quot;&quot;&quot;
+    num_modes = U.shape[1]
+
+    # project initial state
+    c = deconstruct_fn(psi0_x, U_conj, w)
+    c = normalize_coeffs(c, U, w, target_norm=target_norm)
+
+    omega, A, Phi = precompute_linear_coefficients(num_modes, spring_constant, dt)
+
+    # storage variables
+    snapshots, times, norms = [], [], []
+
+    def compute_norm(c_vec):
+        psi = reconstruct_fn(c_vec, U)
+        return np.sum(np.abs(psi)**2 * w)
+
+    # initial snapshot
+    snapshots.append(reconstruct_fn(c, U))
+    times.append(0.0)
+    norms.append(compute_norm(c))
+
+    for step in range(1, num_steps + 1):
+        c = exp_midpoint_step(c, A, Phi, U, U_conj, w, g, dt)
+
+        # OPTIONAL manual renormalization
+        # c = normalize_coeffs(c, U, w, target_norm=target_norm)
+
+        if step % store_every == 0 or step == num_steps:
+            t = step * dt
+            psi_t = reconstruct_fn(c, U)
+            snapshots.append(psi_t)
+            times.append(t)
+            norms.append(compute_norm(c))
+
+    return np.array(times), np.array(snapshots), np.array(norms)</code></pre>
+<h1 data-number="4" id="numerical-plots-and-analysis"><span
+class="header-section-number">4</span> Numerical Plots and Analysis</h1>
+<h2 data-number="4.1" id="linear-system"><span
+class="header-section-number">4.1</span> Linear System</h2>
+<p>Our method exactly solves the linear system by construction. Thus, we
+expect exact agreement when <span class="math inline">\(g = 0\)</span>
+up to discretization and numerical precision error.</p>
+<figure id="fig:stationary-qho">
+<figure>
+<img src="media/qho_u0_t10.png" />
+</figure>
+<figure>
+<img src="media/qho_u0_t100.png" />
+</figure>
+<figcaption><span class="math inline">\(\psi(x, 0) = u_0(x)\)</span>
+with nonlinearity parameter <span class="math inline">\(g = 0\)</span>,
+<span class="math inline">\(h=0.01\)</span>, <span
+class="math inline">\(\kappa = 1.0\)</span>, and <span
+class="math inline">\(M = 40\)</span>. Both methods agree exactly with
+the true solution.</figcaption>
+</figure>
+<figure id="fig:drift-qho">
+<figure>
+<img src="media/superposition_drift_t10.png" />
+</figure>
+<figure>
+<img src="media/superposition_drift_t100.png" />
+</figure>
+<figcaption><span class="math inline">\(\psi(x, 0) =
+\frac{e^{-2ix}}{\sqrt{2}}(u_0(x) + u_1(x))\)</span> with nonlinearity
+parameter <span class="math inline">\(g = 0\)</span>, <span
+class="math inline">\(h=0.01\)</span>, <span
+class="math inline">\(\kappa = 1.0\)</span>, and <span
+class="math inline">\(M = 40\)</span>. Both methods agree exactly with
+the true solution.</figcaption>
+</figure>
+<h2 data-number="4.2" id="weak-nonlinearity"><span
+class="header-section-number">4.2</span> Weak Nonlinearity</h2>
+<p>This is precisely the regime in which we expect the solvers to do
+well—the time-evolved functions should be quite expressible in the QHO
+basis since the nonlinearity doesn’t take over. To test the analytical
+periodic motion prediction, we make phase space heat maps for each
+method; see Figure <a href="#fig:beating" data-reference-type="ref"
+data-reference="fig:beating">5</a>.</p>
+<figure id="fig:beating">
+<figure id="fig:expo">
+<img src="media/gaussian_breathing_peaks_expo.png" />
+<figcaption>Exponential</figcaption>
+</figure>
+<figure id="fig:symplectic">
+<img src="media/gaussian_breathing_peaks_symplectic.png" />
+<figcaption>Symplectic</figcaption>
+</figure>
+<figcaption>Short time evolution for <span class="math inline">\(\psi(x,
+0) = u_0(x)\)</span> with nonlinearity parameter <span
+class="math inline">\(g = 0.3\)</span>. There’s virtually complete
+agreement between the two solvers.</figcaption>
+</figure>
+<p>We can calculate the frequency associated with the periodic motion in
+Figure <a href="#fig:beating" data-reference-type="ref"
+data-reference="fig:beating">5</a> by noting that since the nonlinearity
+will only couple the even initial state to other even eigenmodes, we can
+just track the motion of the coordinate at <span
+class="math inline">\(x=0\)</span><a href="#fn4" class="footnote-ref"
+id="fnref4" role="doc-noteref"><sup>4</sup></a>. Doing so yielded a
+period of 4.51, corresponding to a frequency of <span
+class="math inline">\(2\pi / 4.51 \approx 1.39\)</span>. Comparing to
+our prediction from Eq. <a href="#eq:breathing"
+data-reference-type="ref"
+data-reference="eq:breathing">[eq:breathing]</a>: <span
+class="math display">\[\begin{aligned}
+    2\sqrt{\kappa} = 2\sqrt{0.5} \approx 1.41
+\end{aligned}\]</span> So we have very strong agreement, less than 2%
+error. Varying <span class="math inline">\(g\)</span> shows that the
+frequency agrees more strongly with the theoretical prediction as <span
+class="math inline">\(|g| \to 0\)</span> and disagrees more as <span
+class="math inline">\(|g| \to 1\)</span>.</p>
+<p>Moreover, we show agreement with other numerical studies of the GPE.
+A work by Tsednee et al. uses a split-step technique combined with a
+Legendre pseudospectral representation to solve different versions of
+the GPE, one of which is precisely the 1D GPE with a quadratic trapping
+potential. For parameters <span class="math inline">\(\kappa =
+1.0\)</span>, <span class="math inline">\(L = 10\)</span>, and <span
+class="math inline">\(\psi(x, 0) = u_0(x)\)</span>, they plot <span
+class="math inline">\(|\psi(0, t)|^2\)</span> vs <span
+class="math inline">\(t\)</span> for <span class="math inline">\(g \in
+\{-1.0, -2.5, -5.0\}\)</span><a href="#fn5" class="footnote-ref"
+id="fnref5" role="doc-noteref"><sup>5</sup></a>. Figure <a
+href="#fig:lit-comparison" data-reference-type="ref"
+data-reference="fig:lit-comparison">6</a> compares Figure 2(b) from
+Tsednee et al. with plots obtained from the implementation in this work.
+There is clear strong agreement. Interestingly, there appears to be a
+mild asymmetry in the oscillation peak for all of the <span
+class="math inline">\(g = -2.5\)</span> plots<a href="#fn6"
+class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. It
+is unclear as to whether this is a numerical issue or the actual
+behavior exhibited by the GPE, but it is roughly shared by this work’s
+method and Tsednee et al.’s implementation.</p>
+<figure id="fig:lit-comparison">
+<figure>
+<img src="media/tseedne.png" />
+<figcaption>From Tseednee et al., Figure 2(b). Red, green, and blue
+correspond to <span class="math inline">\(g\)</span> values of <span
+class="math inline">\(-5.0\)</span>, <span
+class="math inline">\(-2.5\)</span>, and <span
+class="math inline">\(-1.0\)</span>, respectively.</figcaption>
+</figure>
+<figure>
+<img src="media/tseedne_comp.png" />
+<figcaption>Results from this work’s implementations. <span
+class="math inline">\(M = 80\)</span> was used for all 6
+plots.</figcaption>
+</figure>
+<figcaption>Comparing <span class="math inline">\(|\psi(0,
+t)|^2\)</span> for different <span class="math inline">\(g\)</span>
+values with results in the literature.</figcaption>
+</figure>
+<h2 data-number="4.3" id="strong-nonlinearity"><span
+class="header-section-number">4.3</span> Strong Nonlinearity</h2>
+<p>We also consider dynamics in parameter regimes where <span
+class="math inline">\(g &gt; 1\)</span>. However, as previously
+suggested, our scheme becomes less stable for large <span
+class="math inline">\(g\)</span>. An intuitive reason for this is due to
+the fact that the coupling between QHO modes becomes very strong,
+leading to high modes being occupied for small <span
+class="math inline">\(t\)</span>. To observe stable dynamics, then, we
+would like <span class="math inline">\(\psi(x, 0)\)</span> to
+approximate eigenstates (or linear combinations of them) of the GPE.
+This can be done for the GPE ground state numerically via gradient
+descent; see Appendix B. We can compare this to our Thomas-Fermi
+approximation form, which is exactly done in  <a href="#fig:tf"
+data-reference-type="ref" data-reference="fig:tf">7</a>, demonstrating
+relatively good stationarity over time. Of course, there will be gradual
+dynamics regardless of basis size due to having a finite number of
+modes.</p>
+<figure id="fig:tf">
+<img src="media/tf.png" />
+<figcaption>GPE groundstate plotted at different times using our
+symplectic integrator. For the calculation of the GPE groundstate, an
+Euler step of size 0.0002 was used with 20,000 total iterations. There
+is little motion over time, as desired, as well as extremely good
+agreement with our analytical approximation.</figcaption>
+</figure>
+<p>Finally, we consider a less explored situation. It is known that
+experimental physics techniques exist to prepare a system of weakly
+interacting bosons in a harmonic trap (typically an optical trap).
+Moreover, a property known as Feshbach resonance can be driven to cause
+sudden, strong interactions between the atoms (corresponding to large
+<span class="math inline">\(g\)</span>). Thus, we may be interested in
+studying what happens to a system of ultracold, almost non-interacting
+bosons that are suddenly driven to interact strongly. The key parameters
+defining this setting are <span class="math display">\[\begin{aligned}
+    g = 10, \, \psi(x, 0) = u_0(x) e^{-5ix}, \, \kappa = 0.5
+    \label{eq:new-sit}
+\end{aligned}\]</span> where the phase attached to the QHO ground state
+is to give the initial gas some velocity in the trap; results are shown
+in Figure <a href="#fig:new-situation" data-reference-type="ref"
+data-reference="fig:new-situation">8</a>.</p>
+<figure id="fig:new-situation">
+<figure>
+<img src="media/new-situation-100.png" />
+</figure>
+<figure>
+<img src="media/new-situation-200.png" />
+</figure>
+<figcaption>Time evolution for the ‘less explored’ situation with
+parameters given by Eq. <a href="#eq:new-sit" data-reference-type="ref"
+data-reference="eq:new-sit">[eq:new-sit]</a>. The symplectic solver was
+used for both plots. Agreement between these two plots indicates that
+the new peaks that appear for later time (bottom of the contours) are
+not numerical artifacts. These likely arise from the nodes present in
+the higher order QHO modes.</figcaption>
+</figure>
+<h1 data-number="5" id="conclusion"><span
+class="header-section-number">5</span> Conclusion</h1>
+<p>This work developed two exponential numerical solvers for the 1D GPE:
+an exponential midpoint method and a symplectic rotated exponential
+midpoint method, both in a truncated QHO eigenbasis. The Galerkin
+reduction led to a stiff, nonlinear ODE system whose linear part was
+treated exactly, enabling very good short and medium-time dynamics
+(particularly for weak nonlinearity).</p>
+<p>The methods were validated across several regimes. In the linear
+case, both schemes reproduced the exact QHO evolution to numerical
+precision. This is essentially guaranteed by construction. In the weakly
+nonlinear regime, the numerically extracted oscillation frequency agreed
+with the perturbative prediction <span
+class="math inline">\(2\sqrt{\kappa}\)</span> to within <span
+class="math inline">\(2\%\)</span>. Direct comparison with the Tsednee
+et al. showed strong quantitative agreement for <span
+class="math inline">\(|\psi(0,t)|^2\)</span> across several values of
+<span class="math inline">\(g\)</span>. For stronger interactions, the
+numerically computed ground state matched the derived Thomas-Fermi
+profile and remained nearly stationary under symplectic evolution. A
+sudden-interaction spike further revealed interesting peak-splitting
+dynamics consistent with excitation of higher QHO modes.</p>
+<p>These methods’ limitations arise primarily from basis truncation in
+the strongly interacting regime, suggesting that a different mode
+expansion is a natural start for future work.</p>
+<h1 data-number="6" id="bibliography"><span
+class="header-section-number">6</span> Bibliography</h1>
+<p>L. Pitaevskii and S. Stringari, <em>Bose–Einstein Condensation</em>,
+Oxford University Press (2003).</p>
+<p>F. Dalfovo, S. Giorgini, L. P. Pitaevskii, and S. Stringari, “Theory
+of Bose–Einstein condensation in trapped gases,”
+<em>Rev. Mod. Phys.</em> <strong>71</strong>, 463 (1999).</p>
+<p>G. Baym and C. Pethick, “Ground-state properties of magnetically
+trapped Bose condensates,” <em>Phys. Rev. Lett.</em>
+<strong>76</strong>, 6 (1996).</p>
+<p>Ts. Tsednee, J. M. Rost, and D. Vrinceanu, “Solving the nonlinear
+Gross–Pitaevskii equation via Legendre pseudospectral and split-operator
+methods,” arXiv:2204.09189 (2022).</p>
+<p>C. Chin, R. Grimm, P. Julienne, and E. Tiesinga, “Feshbach resonances
+in ultracold gases,” <em>Rev. Mod. Phys.</em> <strong>82</strong>, 1225
+(2010).</p>
+</div>
+<h1 data-number="7" id="appendices"><span
+class="header-section-number">7</span> Appendices</h1>
+<h2 data-number="7.1" id="appendix-a-fixing-omega-in-thomas-fermi"><span
+class="header-section-number">7.1</span> Appendix A: Fixing <span
+class="math inline">\(\omega\)</span> in Thomas-Fermi</h2>
+<p><span class="math display">\[\begin{aligned}
+    1 &amp;= \int_{\mathbb{R}}
+    \frac{1}{g}
+    \left( \omega - \frac{\kappa}{2}x^2 \right)
+     \, dx \\ &amp;=
+    \int_{-R}^{R}
+    \frac{1}{g}
+    \left( \omega - \frac{\kappa}{2}x^2 \right)
+     \, dx \\ &amp;=
+     \frac{2}{g} \left [
+         \omega R - \frac{\kappa R^3}{6} \right ] \\ &amp;\implies
+     \omega = \frac{g}{2R} + \frac{\kappa R^2}{6}
+\end{aligned}\]</span></p>
+<h2 data-number="7.2"
+id="appendix-b-gradient-descent-for-the-ground-state"><span
+class="header-section-number">7.2</span> Appendix B: Gradient Descent
+for the Ground State</h2>
+<p>We can employ a ‘trick’ here; note that if we map <span
+class="math inline">\(t \mapsto -i\tau\)</span>, then the GPE becomes
+<span class="math display">\[\begin{aligned}
+    \partial_{\tau}\psi = \frac{1}{2}\psi_{x x} -
+\frac{\kappa}{2}x^2\psi
+    + g|\psi|^2\psi
+\end{aligned}\]</span> Now, expanding <span
+class="math inline">\(\psi(\tau)\)</span> in its eigenbasis gives <span
+class="math display">\[\begin{aligned}
+     \psi(\tau) = e^{- \hat{H}\tau}\psi(0) =
+     \psi(0) \left [
+         c_0e^{-E_0\tau}v_0 + c_1e^{-E_1\tau}v_1 + \ldots
+         \right ]
+\end{aligned}\]</span> where <span class="math inline">\(v_i\)</span> is
+the <span class="math inline">\(i\)</span>th eigenvector of the GPE
+system and <span class="math inline">\(E_i\)</span> is the <span
+class="math inline">\(i\)</span>th eigenvalue. This uses the fact that
+the Hamiltonian is time-independent, so <span
+class="math inline">\(\psi\)</span>’s projection onto the system’s
+eigenbasis is constant in time. Now, since <span
+class="math inline">\(E_0 &lt; E_1 &lt; E_2 &lt; \ldots\)</span>, as
+<span class="math inline">\(\tau\)</span> gets large, <span
+class="math inline">\(\psi(\tau) \to v_0\)</span> up to normalization.
+The most natural approach, then, is to keep stepping forward in <span
+class="math inline">\(\tau\)</span> via the update rule <span
+class="math display">\[\begin{aligned}
+c_n(\tau + d\tau)
+\;\leftarrow\;
+c_n(\tau)
+- d\tau \left[
+E_n\,c_n(\tau)
++
+\left\langle u_n,\; g\,|\psi(\tau)|^2\,\psi(\tau) \right\rangle
+\right], \quad
+     \text{normalize}
+\end{aligned}\]</span> where <span class="math inline">\(n\)</span> here
+indexes our QHO modes, and we’ve used the fact that the QHO modes
+diagonalize the linear part of the Hamiltonian. There is a unique
+minimum (the global ground state), so we can simply continue the
+iteration until convergence. My code for this is below.</p>
+<pre style="mypython" data-caption="Gradient Descent Code"><code>def compute_gpe_ground_state(x, U, U_conj, weights, g, kappa, num_modes, dt_tau = 1e-3, num_steps = 1000) -&gt; np.ndarray:
+
+    # start from linear QHO ground state
+    coeffs = np.zeros(num_modes, dtype=complex)
+    coeffs[0] = 1.0 + 0.0j
+
+    # QHO eigenenergies
+    omega = np.sqrt(kappa)       # alias
+    n = np.arange(num_modes)
+    En = omega * (n + 0.5)       # H_QHO u_n = E_n u_n
+
+    for _ in range(num_steps):
+        # need to project to position space for |psi|^2psi, then project back
+        psi = reconstruct_fn(coeffs, basis_matrix=U)
+        nl_x = g * (np.abs(psi)**2) * psi
+        nl_coeffs = U_conj.T @ (nl_x * weights)
+
+        dcoeffs_dtau = -(En * coeffs + nl_coeffs)
+        # Euler step
+        coeffs += dt_tau * dcoeffs_dtau
+        # RENORMALIZE TO PREVENT DECAY TO 0!!!!
+        coeffs = normalize_coeffs(coeffs, U, weights, target_norm=1.0)
+
+    return coeffs</code></pre>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>This normalization condition is a little tricky; really,
+we should have <span class="math inline">\(\int_{\mathbb{R}} |\psi|^2 \,
+dx = N\)</span>, where <span class="math inline">\(N\)</span> the number
+of bosons in the gas. But we can also rescale the wavefunctions via
+<span class="math inline">\(\psi \mapsto \frac{\psi}{\sqrt{N}}\)</span>
+Doing so gives the desired unity normalization, but note that the
+interaction coefficient <span class="math inline">\(g\)</span> is then
+generally dependent on <span class="math inline">\(N\)</span>.<a
+href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This is a double-edged sword; expanding in this basis is
+very convenient for handling <span class="math inline">\(H_0\)</span>,
+but note that we can never simulate the case in which <span
+class="math inline">\(\kappa = 0\)</span> since every eigenfunction and
+eigenvalue would be 0. So this choice forces us to have a non-zero
+trapping potential. Moreover, as the nonlinearity parameter <span
+class="math inline">\(g\)</span> increases, we quickly leave the realm
+of functions easily expressed by the QHO eigenfunctions, leading to more
+modes being needed. There’s a kind of Gibb’s effect issue, so this
+integrator won’t work well for large <span
+class="math inline">\(g\)</span> over long times.<a href="#fnref2"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Technically, we can manually implement a function to
+renormalize wavefunction coefficients at every step to ‘force’
+conservation of <em>only</em> one property.<a href="#fnref3"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>To address this, I was careful to use an odd number of
+grid points. I used SciPy’s <code>find_peaks</code> function, which
+determines peaks by comparing a coordinate’s value to its neighboring
+frames’ values. All measurement error is up to the time-step <span
+class="math inline">\(h\)</span>, then.<a href="#fnref4"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>They say they plot <span class="math inline">\(g \in
+\{-1.0, -2.5, -10.0\}\)</span>, but I obtained almost identical results
+with <span class="math inline">\(g = -5.0\)</span> instead of <span
+class="math inline">\(g=-10.0\)</span>. I suspect that was a
+documentational issue on their end. Moreover, they claim to use 128
+points on their discretized grid from <span class="math inline">\([-10,
+10]\)</span>, but this suggests (assuming the points are evenly spaced)
+that there isn’t actually an evaluation at <span class="math inline">\(x
+= 0\)</span>. For my analysis, I used 129 points to resolve this.<a
+href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Perhaps also for the other <span
+class="math inline">\(g\)</span> values, but it is harder to make out.<a
+href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</body>
+</html>
