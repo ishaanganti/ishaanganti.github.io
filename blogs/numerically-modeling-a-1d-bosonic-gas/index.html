@@ -30,12 +30,6 @@
       }
     }
 
-    body {
-      line-height: 1.5;
-      white-space: pre-wrap;
-      background-color: #fdfdf5;
-      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
-    }
 
     a,
     a.visited {
@@ -329,18 +323,23 @@
     font-size: 0.9em;
     }
 
-    /* ===== Proportional mobile scaling (no scrolling) ===== */
 
-    @media (max-width: 700px) {
-      body {
-        transform: scale(0.92);
-        transform-origin: top center;
-      }
+    mjx-container[display="true"] {
+      max-width: 100%;
     }
 
-
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>
+    window.MathJax = {
+      chtml: {
+        linebreaks: { automatic: true },
+        scale: 1
+      }
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script> -->
 </head>
 <body>
     <a href="../../blog-list.html">← Back to blog list</a>
