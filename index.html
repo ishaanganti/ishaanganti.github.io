@@ -3,88 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ishaan Ganti</title>
+    <title>Ishaan Ganti — Applied Math, Physics, and CS at Brown</title>
+    <meta
+        name="description"
+        content="Ishaan Ganti is an undergraduate at Brown studying applied mathematics, physics, and computer science, with interests in machine learning for biology and chemistry, quantum optics, and technical writing."
+    >
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      "mainEntity": {
+        "@type": "Person",
+        "name": "Ishaan Ganti",
+        "affiliation": {
+          "@type": "CollegeOrUniversity",
+          "name": "Brown University"
+        },
+        "sameAs": [
+          "https://github.com/ishaanganti/",
+          "https://www.linkedin.com/in/ishaan-ganti-b56376291/",
+          "https://web.mit.edu/jianshucaogroup/people.html"
+        ]
+      }
+    }
+    </script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-        
+        :root {
+            --bg: #fcfcf8;
+            --text: #1f2937;
+            --muted: #5b6470;
+            --link: #1d4ed8;
+            --border: rgba(29, 78, 216, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'VT323', monospace;
-            background-color: #fdfdf5;
-            color: #333;
-            max-width: 500px;
-            margin: 60px 20px;
-            padding: 30px;
-            line-height: 1.3;
-            text-align: left;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            max-width: 680px;
+            margin: 72px auto;
+            padding: 0 24px;
+            line-height: 1.65;
+            font-size: 18px;
         }
-        
+
+        main {
+            width: 100%;
+        }
+
         h1 {
-            font-size: 2em;
-            margin-bottom: 5px;
+            font-size: clamp(2.25rem, 6vw, 3rem);
+            line-height: 1.05;
+            margin: 0 0 14px;
             font-weight: 700;
+            letter-spacing: -0.03em;
         }
-        
+
         .intro {
-            font-size: 0.95em;
-            margin-bottom: 25px;
-            color: #555;
+            font-size: 1rem;
+            color: var(--muted);
+            max-width: 58ch;
+            margin: 0 0 28px;
         }
-        
+
         .links {
             list-style: none;
             padding: 0;
+            margin: 0;
             display: flex;
-            gap: 20px;
-            justify-content: flex-start;
+            gap: 12px 18px;
             flex-wrap: wrap;
         }
-        
+
         .links li {
-            font-size: 1em;
+            font-size: 0.98rem;
         }
-        
-        .links a {
-            color: #0066cc;
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: border-bottom-color 0.2s ease;
+
+        .links a,
+        .email-link {
+            color: var(--link);
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 0.18em;
+            text-decoration-color: var(--border);
+            transition: text-decoration-color 0.2s ease, opacity 0.2s ease;
         }
-        
-        .links a:hover {
-            border-bottom-color: #0066cc;
+
+        .links a:hover,
+        .email-link:hover {
+            text-decoration-color: var(--link);
+            opacity: 0.9;
         }
-        
+
         @media (max-width: 600px) {
             body {
-                margin: 40px 20px;
-                padding: 20px;
-                text-align: left;
+                margin: 40px auto;
+                padding: 0 20px;
+                font-size: 17px;
             }
-            
-            h1 {
-                font-size: 1.8em;
-            }
-            
-            .links {
-                justify-content: flex-start;
+
+            .intro {
+                font-size: 0.98rem;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Ishaan Ganti</h1>
-    
-    <p class="intro">
-        I'm an undergrad at Brown studying applied math, physics, and computer science. 
-        I like ML for bio/chem, quantum optics, and reading.
-    </p>
-    
-    <ul class="links">
-        <li><a href="blog-list.html">Blog</a></li>
-        <li><a href="https://github.com/ishaanganti/">GitHub</a></li>
-        <li><a href="https://web.mit.edu/jianshucaogroup/people.html">Research</a></li>
-        <li><a href="https://www.linkedin.com/in/ishaan-ganti-b56376291/">LinkedIn</a></li>
-        <li>Email: ishaan_ganti [at] brown [dot] edu</li>
-    </ul>
+    <main>
+        <h1>Ishaan Ganti</h1>
+
+        <p class="intro">
+            I'm an undergraduate at Brown studying applied mathematics, physics, and computer science.
+            I'm interested in machine learning for biology and chemistry, quantum optics, and
+            molecular dynamics.
+            This site consolidates my writing, research, current work, and jumbled thoughts.
+        </p>
+
+        <nav aria-label="Primary">
+            <ul class="links">
+                <li><a href="blog-list.html">Writing</a></li>
+                <li><a href="https://github.com/ishaanganti/">GitHub</a></li>
+                <li><a href="https://web.mit.edu/jianshucaogroup/people.html">Research profile</a></li>
+                <li><a href="https://www.linkedin.com/in/ishaan-ganti-b56376291/">LinkedIn</a></li>
+                <li>Email: ishaan_ganti [at] brown [dot] edu</li>
+            </ul>
+        </nav>
+    </main>
 </body>
 </html>
