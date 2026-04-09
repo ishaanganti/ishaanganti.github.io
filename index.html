@@ -116,6 +116,81 @@
                 font-size: 0.98rem;
             }
         }
+        .slideshow-section {
+            margin-top: 56px;
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin: 0 0 14px;
+            color: var(--text);
+        }
+
+        .slideshow-card {
+            margin: 0;
+            width: 100%;
+        }
+
+        .slideshow-viewport {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            max-height: 300px;
+            overflow: hidden;
+            background: #f3f4f6;
+            border: 1px solid rgba(31, 41, 55, 0.08);
+        }
+
+        #slideshow-image {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slideshow-caption {
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.55;
+            min-height: 1.5em;
+        }
+
+        .slideshow-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .slideshow-button {
+            appearance: none;
+            border: 1px solid rgba(31, 41, 55, 0.12);
+            background: transparent;
+            color: var(--text);
+            font: inherit;
+            font-size: 0.92rem;
+            padding: 8px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+        }
+
+        .slideshow-button:hover {
+            background: rgba(31, 41, 55, 0.04);
+            border-color: rgba(31, 41, 55, 0.2);
+        }
+
+        @media (max-width: 600px) {
+            .slideshow-section {
+                margin-top: 44px;
+            }
+
+            .slideshow-caption {
+                font-size: 0.94rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -132,12 +207,130 @@
         <nav aria-label="Primary">
             <ul class="links">
                 <li><a href="blog-list.html">Writing</a></li>
+                <li><a href="scribbles.html">Scribbles</a></li>
                 <li><a href="https://github.com/ishaanganti/">GitHub</a></li>
                 <li><a href="https://web.mit.edu/jianshucaogroup/people.html">Research profile</a></li>
                 <li><a href="https://www.linkedin.com/in/ishaan-ganti-b56376291/">LinkedIn</a></li>
+                <li><a href="https://x.com/ishaanganti">X</a></li>
                 <li>Email: ishaan_ganti [at] brown [dot] edu</li>
             </ul>
         </nav>
+        <section class="slideshow-section" aria-labelledby="slideshow-heading">
+            <h2 id="slideshow-heading" class="section-title">Gallery</h2>
+        
+            <figure class="slideshow-card">
+                <div class="slideshow-viewport">
+                    <img
+                        id="slideshow-image"
+                        src=""
+                        alt=""
+                        loading="eager"
+                        decoding="async"
+                        fetchpriority="high"
+                        width="1200"
+                        height="750"
+                    >
+                </div>
+        
+                <figcaption id="slideshow-caption" class="slideshow-caption"></figcaption>
+            </figure>
+        
+            <div class="slideshow-controls" aria-label="Slideshow controls">
+                <button type="button" class="slideshow-button" id="prev-slide">← Prev</button>
+                <button type="button" class="slideshow-button" id="next-slide">Next →</button>
+            </div>
+        </section>
     </main>
+    <script>
+        const slideshowImage = document.getElementById("slideshow-image");
+        const slideshowCaption = document.getElementById("slideshow-caption");
+        const prevButton = document.getElementById("prev-slide");
+        const nextButton = document.getElementById("next-slide");
+    
+        let slides = [];
+        let currentSlide = 0;
+        let renderToken = 0;
+        const imageCache = new Map();
+    
+        const preloadImage = (src) => {
+            if (imageCache.has(src)) return imageCache.get(src);
+    
+            const promise = new Promise((resolve, reject) => {
+                const img = new Image();
+                img.decoding = "async";
+    
+                img.onload = async () => {
+                    try {
+                        if (img.decode) await img.decode();
+                    } catch (_) {}
+                    resolve(img);
+                };
+    
+                img.onerror = () => reject(new Error(`Could not load image: ${src}`));
+                img.src = src;
+            });
+    
+            imageCache.set(src, promise);
+            return promise;
+        };
+    
+        const preloadNeighbors = () => {
+            if (slides.length < 2) return;
+            preloadImage(slides[(currentSlide + 1) % slides.length].src).catch(() => {});
+            preloadImage(slides[(currentSlide - 1 + slides.length) % slides.length].src).catch(() => {});
+        };
+    
+        const renderSlide = async () => {
+            const token = ++renderToken;
+            const slide = slides[currentSlide];
+    
+            slideshowCaption.textContent = slide.caption || "";
+    
+            try {
+                const img = await preloadImage(slide.src);
+                if (token !== renderToken) return;
+    
+                slideshowImage.src = img.src;
+                slideshowImage.alt = slide.alt || slide.caption || "";
+                preloadNeighbors();
+            } catch (error) {
+                if (token !== renderToken) return;
+                slideshowCaption.textContent = error.message;
+                console.error(error);
+            }
+        };
+    
+        const showSlide = (index) => {
+            if (!slides.length) return;
+            currentSlide = (index + slides.length) % slides.length;
+            renderSlide();
+        };
+    
+        prevButton.addEventListener("click", () => {
+            showSlide(currentSlide - 1);
+        });
+    
+        nextButton.addEventListener("click", () => {
+            showSlide(currentSlide + 1);
+        });
+    
+        async function loadSlides() {
+            try {
+                const response = await fetch("slides/slides.json");
+                if (!response.ok) throw new Error(`Could not load slides.json (${response.status})`);
+    
+                slides = await response.json();
+                if (!Array.isArray(slides)) throw new Error("slides.json is not an array");
+                if (!slides.length) throw new Error("slides.json is empty");
+    
+                await renderSlide();
+            } catch (error) {
+                slideshowCaption.textContent = error.message;
+                console.error(error);
+            }
+        }
+    
+        loadSlides();
+    </script>
 </body>
 </html>
