@@ -192,6 +192,151 @@
                 font-size: 0.94rem;
             }
         }
+
+        .reading-section {
+            margin-top: 56px;
+        }
+
+        .reading-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .reading-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(31, 41, 55, 0.07);
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .reading-item:first-child {
+            border-top: 1px solid rgba(31, 41, 55, 0.07);
+        }
+
+        .reading-indicator {
+            position: absolute;
+            left: -1.5rem;
+            top: 11px;
+        }
+
+        .notes-icon {
+            text-decoration: none;
+            color: var(--muted);
+            display: block;
+            transition: color 0.15s ease;
+        }
+
+        .notes-icon:hover {
+            color: var(--link);
+        }
+
+        .reading-left {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            gap: 2px;
+        }
+
+        .reading-title a {
+            color: var(--link);
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 0.18em;
+            text-decoration-color: var(--border);
+            transition: text-decoration-color 0.2s ease;
+        }
+
+        .reading-title a:hover {
+            text-decoration-color: var(--link);
+        }
+
+        .reading-author {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .reading-meta {
+            color: var(--muted);
+            font-size: 0.88rem;
+            white-space: nowrap;
+            text-align: right;
+        }
+
+        @media (max-width: 600px) {
+            .reading-section {
+                margin-top: 44px;
+            }
+
+            .reading-item {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .reading-meta {
+                white-space: normal;
+                text-align: left;
+            }
+        }
+
+        .reading-subtitle {
+            font-size: 0.88rem;
+            color: var(--muted);
+            margin: -8px 0 16px;
+        }
+
+        .reading-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 4px;
+        }
+
+        .filter-btn {
+            appearance: none;
+            border: 1px solid rgba(31, 41, 55, 0.12);
+            background: transparent;
+            color: var(--muted);
+            font: inherit;
+            font-size: 0.82rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .filter-btn:hover {
+            background: rgba(31, 41, 55, 0.05);
+            border-color: rgba(31, 41, 55, 0.2);
+        }
+
+        .filter-btn[data-filter="notes"].active       { background: #1f2937; color: #fcfcf8; border-color: #1f2937; }
+        .filter-btn[data-filter="Article"].active     { background: #334155; color: #fff;    border-color: #334155; }
+        .filter-btn[data-filter="Paper"].active       { background: #b45309; color: #fff;    border-color: #b45309; }
+        .filter-btn[data-filter="Blog"].active        { background: #1d4ed8; color: #fff;    border-color: #1d4ed8; }
+        .filter-btn[data-filter="Book"].active        { background: #047857; color: #fff;    border-color: #047857; }
+        .filter-btn[data-filter="Short Story"].active { background: #be123c; color: #fff;    border-color: #be123c; }
+
+        .tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 1px 7px;
+            border-radius: 999px;
+            letter-spacing: 0.01em;
+            vertical-align: middle;
+        }
+
+        .tag-article     { background: rgba(107, 114, 128, 0.12); color: #374151; }
+        .tag-paper       { background: rgba(180, 120, 0, 0.12);   color: #92400e; }
+        .tag-blog        { background: rgba(29, 78, 216, 0.10);   color: #1d4ed8; }
+        .tag-book        { background: rgba(5, 150, 105, 0.10);   color: #065f46; }
+        .tag-short-story { background: rgba(220, 38, 38, 0.10);   color: #991b1b; }
     </style>
 </head>
 <body>
@@ -208,7 +353,6 @@
         <nav aria-label="Primary">
             <ul class="links">
                 <li><a href="blog-list.html">Writing</a></li>
-                <li><a href="scribbles.html">Scribbles</a></li>
                 <li><a href="https://github.com/ishaanganti/">GitHub</a></li>
                 <li><a href="https://web.mit.edu/jianshucaogroup/people.html">Research profile</a></li>
                 <li><a href="https://www.linkedin.com/in/ishaan-ganti-b56376291/">LinkedIn</a></li>
@@ -240,6 +384,14 @@
                 <button type="button" class="slideshow-button" id="prev-slide">← Prev</button>
                 <button type="button" class="slideshow-button" id="next-slide">Next →</button>
             </div>
+        </section>
+        <section class="reading-section" aria-labelledby="reading-heading">
+            <h2 id="reading-heading" class="section-title">What I'm Reading</h2>
+            <p class="reading-subtitle">Pen emoticons link to my thoughts on the work. Dates are when I read the work.</p>
+            <div class="reading-controls" id="type-filters"></div>
+            <!-- READING_LIST_ITEMS_START -->
+            <ul class="reading-list" id="reading-list"><li class="reading-item" data-type="Blog" data-date="2026-06-13" data-has-notes="false"><span class="reading-indicator"></span><span class="reading-left"><span class="reading-title"><a href="https://darioamodei.com/post/policy-on-the-ai-exponential#top" target="_blank" rel="noopener">Policy On the AI Exponential</a></span><span class="reading-author">Dario Amodei</span></span><span class="reading-meta"><span class="tag tag-blog">Blog</span> June 13, 2026</span></li><li class="reading-item" data-type="Paper" data-date="2026-06-11" data-has-notes="true"><span class="reading-indicator"><a href="/readings/distilling-foundation-models-via-energy-hessians/" class="notes-icon" title="My notes"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></a></span><span class="reading-left"><span class="reading-title"><a href="https://arxiv.org/abs/2501.09009" target="_blank" rel="noopener">Distilling Foundation Models via Energy Hessians</a></span><span class="reading-author">Ishan Amin (et. al)</span></span><span class="reading-meta"><span class="tag tag-paper">Paper</span> June 11, 2026</span></li><li class="reading-item" data-type="Book" data-date="2026-05-20" data-has-notes="false"><span class="reading-indicator"></span><span class="reading-left"><span class="reading-title"><a href="https://www.goodreads.com/book/show/6334.Never_Let_Me_Go" target="_blank" rel="noopener">Never Let Me Go</a></span><span class="reading-author">Kazuo Ishiguro</span></span><span class="reading-meta"><span class="tag tag-book">Book</span> May 20, 2026</span></li></ul>
+            <!-- READING_LIST_ITEMS_END -->
         </section>
     </main>
     <script>
@@ -332,6 +484,62 @@
         }
     
         loadSlides();
+    </script>
+    <script>
+        (function () {
+            const list = document.getElementById("reading-list");
+            const filtersEl = document.getElementById("type-filters");
+            if (!list || !filtersEl) return;
+
+            const allItems = Array.from(list.querySelectorAll(".reading-item[data-type]"));
+            if (!allItems.length) return;
+
+            const types = [...new Set(allItems.map(li => li.dataset.type).filter(Boolean))];
+
+            // "Has notes" toggle first, then one button per type
+            const notesBtn = document.createElement("button");
+            notesBtn.type = "button";
+            notesBtn.className = "filter-btn";
+            notesBtn.dataset.filter = "notes";
+            notesBtn.textContent = "Has notes";
+            filtersEl.appendChild(notesBtn);
+
+            types.forEach(type => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "filter-btn";
+                btn.dataset.filter = type;
+                btn.textContent = type;
+                filtersEl.appendChild(btn);
+            });
+
+            filtersEl.addEventListener("click", e => {
+                const btn = e.target.closest(".filter-btn");
+                if (!btn) return;
+                btn.classList.toggle("active");
+                render();
+            });
+
+            function render() {
+                const activeTypes = Array.from(filtersEl.querySelectorAll(".filter-btn:not([data-filter='notes']).active")).map(b => b.dataset.filter);
+                const notesOnly = notesBtn.classList.contains("active");
+
+                let visible = allItems.slice();
+                if (activeTypes.length) visible = visible.filter(li => activeTypes.includes(li.dataset.type));
+                if (notesOnly) visible = visible.filter(li => li.dataset.hasNotes === "true");
+
+                allItems.forEach(li => { li.style.display = visible.includes(li) ? "" : "none"; });
+
+                visible.sort((a, b) => {
+                    const da = a.dataset.date ? new Date(a.dataset.date) : new Date(0);
+                    const db = b.dataset.date ? new Date(b.dataset.date) : new Date(0);
+                    return db - da;
+                });
+                visible.forEach(li => list.appendChild(li));
+            }
+
+            render();
+        })();
     </script>
 </body>
 </html>
