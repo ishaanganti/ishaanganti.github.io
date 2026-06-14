@@ -35,6 +35,15 @@
     </script>
 
     <style>
+        @font-face {
+            font-family: "Peachy";
+            src: url("fonts/Peachy_by_lviiise-Regular.ttf") format("truetype"),
+                 url("fonts/Peachy_by_lviiise-Regular.otf") format("opentype");
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
         :root {
             --bg: #fcfcf8;
             --text: #1f2937;
@@ -67,11 +76,12 @@
         }
 
         h1 {
-            font-size: clamp(2.25rem, 6vw, 3rem);
-            line-height: 1.05;
+            font-family: "Peachy", Georgia, serif;
+            font-weight: normal;
+            font-size: clamp(2.75rem, 7vw, 3.75rem);
+            line-height: 1.15;
             margin: 0 0 14px;
-            font-weight: 700;
-            letter-spacing: -0.03em;
+            letter-spacing: -0.01em;
         }
 
         .intro {
