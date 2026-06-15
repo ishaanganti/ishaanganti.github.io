@@ -144,6 +144,8 @@ def note_page(title, author, date_str, reading_type, body_html):
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/scripts/theme.css">
+    <script>var _t=localStorage.getItem('theme');if(_t)document.documentElement.setAttribute('data-theme',_t);</script>
     <style>
         :root {{
             --bg: #fcfcf8;
@@ -186,6 +188,7 @@ def note_page(title, author, date_str, reading_type, body_html):
     <h1>{html.escape(title)}</h1>
     <p class="meta">{meta}</p>
     {body_html}
+    <script src="/scripts/theme.js"></script>
 </body>
 </html>"""
 

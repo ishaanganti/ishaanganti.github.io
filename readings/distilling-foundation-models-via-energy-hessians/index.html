@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/scripts/theme.css">
+    <script>var _t=localStorage.getItem('theme');if(_t)document.documentElement.setAttribute('data-theme',_t);</script>
     <style>
         :root {
             --bg: #fcfcf8;
@@ -50,5 +52,6 @@
     <h1>Distilling Foundation Models via Energy Hessians</h1>
     <p class="meta">Ishan Amin (et. al) &middot; Paper &middot; June 11, 2026</p>
     <ul><li>We don’t actually need the full Hessian for distillation; randomly selected rows work? This is really useful if true<ul><li>Picking the rows smartly could do something here (e.g. normal modes?)</li></ul></li><li><strong>Numerical Hessians seem to be good, too</strong><ul><li>Don’t have to have source code to run <code>autograd</code> myself! Nice for heavily wrapped models</li></ul></li></ul>
+    <script src="/scripts/theme.js"></script>
 </body>
 </html>

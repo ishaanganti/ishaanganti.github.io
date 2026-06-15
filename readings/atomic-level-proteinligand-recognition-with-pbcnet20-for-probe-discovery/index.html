@@ -9,6 +9,8 @@ with PBCNet2.0 for probe discovery — Ishaan Ganti</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/scripts/theme.css">
+    <script>var _t=localStorage.getItem('theme');if(_t)document.documentElement.setAttribute('data-theme',_t);</script>
     <style>
         :root {
             --bg: #fcfcf8;
@@ -61,5 +63,6 @@ with PBCNet2.0 for probe discovery</h1>
 <ol><li>The “almost FEP” claims are bad imo. This model almost surely suffers from the same <a href="https://x.com/CorinWagen/status/1932179641898336320">data contamination issues that plagued Boltz-2</a>. So saying things like <blockquote>Notably, PBCNet2.0 approaches the performance of the gold standard
 Schrödinger FEP+ (ρ = 0.70 and r = 0.70, ∆ρ = 0.03 and Δr = 0.04), with statistically indistinguishable ranking accuracy (P = 0.39).</blockquote>
 <p>feels tacky to me.</p></li><li>The authors mention enforcing prediction antisymmetry through training; ideally, the model should respect \text{prediction}(A, B) = - \text{prediction}(B, A). <strong>It’s not clear to me why this shouldn’t be baked into the architecture</strong>. Probably would have been an interesting ablation, but maybe not worth the time.</li></ol>
+    <script src="/scripts/theme.js"></script>
 </body>
 </html>
