@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomic-level protein–ligand recognition
+with PBCNet2.0 for probe discovery — Ishaan Ganti</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fcfcf8;
+            --text: #1f2937;
+            --muted: #5b6470;
+            --link: #1d4ed8;
+            --border: rgba(29, 78, 216, 0.25);
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: "Inter", system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            max-width: 680px;
+            margin: 72px auto;
+            padding: 0 24px;
+            line-height: 1.65;
+            font-size: 18px;
+        }
+        a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 0.18em; text-decoration-color: var(--border); }
+        a:hover { text-decoration-color: var(--link); }
+        .back { font-size: 0.95rem; margin-bottom: 40px; }
+        .back a { color: var(--muted); }
+        h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); line-height: 1.1; margin: 0 0 8px; font-weight: 700; letter-spacing: -0.02em; }
+        .meta { font-size: 0.95rem; color: var(--muted); margin: 0 0 40px; }
+        h2 { font-size: 1.2rem; font-weight: 600; margin: 36px 0 8px; }
+        h3 { font-size: 1.05rem; font-weight: 600; margin: 24px 0 6px; }
+        p { margin: 0 0 16px; }
+        ul, ol { margin: 0 0 16px; padding-left: 24px; }
+        li { margin-bottom: 4px; }
+        li ul, li ol { margin: 4px 0 0; }
+        blockquote { border-left: 3px solid var(--border); margin: 0 0 16px; padding: 4px 0 4px 16px; color: var(--muted); font-style: italic; }
+        hr { border: none; border-top: 1px solid rgba(31,41,55,0.1); margin: 32px 0; }
+        code { font-family: monospace; font-size: 0.88em; background: rgba(31,41,55,0.06); padding: 1px 4px; border-radius: 3px; }
+        @media (max-width: 600px) { body { margin: 40px auto; font-size: 17px; } }
+    </style>
+</head>
+<body>
+    <p class="back"><a href="/#reading-heading">← back</a></p>
+    <h1>Atomic-level protein–ligand recognition
+with PBCNet2.0 for probe discovery</h1>
+    <p class="meta">Jie Yu (et. al) &middot; Paper &middot; June 14, 2026</p>
+    <h3>General</h3>
+<ul><li>The model takes in a pair of 3D protein-ligand complexes: (Protein X, Ligand A) and (Protein X, Ligand B), <em>where the ligands are docked in the same pocket of Protein X</em>. </li><li>Mutation prediction is supported——the input here is (Wild Type Pocket, Ligand A) and (Mutated Pocket, Ligand A)<ul><li>The mutation sensitivity portion is definitely the most interesting result. This is a pretty known problem for existing biology models (e.g. <a href="https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0282689#sec010">AlphaFold is bad at capturing point mutations</a>)<ul><li>I wonder how much of this performance is from a cherry-picked dataset.</li></ul></li></ul></li></ul>
+<h3>Architecture</h3>
+<ul><li>Siamese neural setup: both complexes passed through same embedding layer.<ul><li>MLP then takes the <em>difference of the embeddings</em> as input. This is a very intentional choice; taking both the individual embeddings and their difference concatenated was possible.</li></ul></li><li>The graphs for message passing are protein-ligand interaction-aware</li></ul>
+<h3>Data Curation</h3>
+<ul><li>BindingDB 2023.12 is used (~3 million affinity measurements)</li><li>Series of ligands are identified with Tanimoto similarity (0.4 threshold), after which docking is performed against a <strong>crystallized protein-ligand structure with a similar ligand to the series.</strong><ul><li>All data is then binding affinity differences between docked pairs, i.e. <strong>data is obtained from docking, not experimentally.</strong></li></ul></li></ul>
+<h3>Criticisms</h3>
+<ol><li>The “almost FEP” claims are bad imo. This model almost surely suffers from the same <a href="https://x.com/CorinWagen/status/1932179641898336320">data contamination issues that plagued Boltz-2</a>. So saying things like <blockquote>Notably, PBCNet2.0 approaches the performance of the gold standard
+Schrödinger FEP+ (ρ = 0.70 and r = 0.70, ∆ρ = 0.03 and Δr = 0.04), with statistically indistinguishable ranking accuracy (P = 0.39).</blockquote>
+<p>feels tacky to me.</p></li><li>The authors mention enforcing prediction antisymmetry through training; ideally, the model should respect \text{prediction}(A, B) = - \text{prediction}(B, A). <strong>It’s not clear to me why this shouldn’t be baked into the architecture</strong>. Probably would have been an interesting ablation, but maybe not worth the time.</li></ol>
+</body>
+</html>

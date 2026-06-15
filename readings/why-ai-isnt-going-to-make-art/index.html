@@ -15,7 +15,6 @@
             --muted: #5b6470;
             --link: #1d4ed8;
             --border: rgba(29, 78, 216, 0.25);
-            --text-rgb: 31, 41, 55;
         }
         * { box-sizing: border-box; }
         body {
@@ -41,12 +40,10 @@
         li { margin-bottom: 4px; }
         li ul, li ol { margin: 4px 0 0; }
         blockquote { border-left: 3px solid var(--border); margin: 0 0 16px; padding: 4px 0 4px 16px; color: var(--muted); font-style: italic; }
-        hr { border: none; border-top: 1px solid rgba(var(--text-rgb),0.1); margin: 32px 0; }
-        code { font-family: monospace; font-size: 0.88em; background: rgba(var(--text-rgb),0.06); padding: 1px 4px; border-radius: 3px; }
+        hr { border: none; border-top: 1px solid rgba(31,41,55,0.1); margin: 32px 0; }
+        code { font-family: monospace; font-size: 0.88em; background: rgba(31,41,55,0.06); padding: 1px 4px; border-radius: 3px; }
         @media (max-width: 600px) { body { margin: 40px auto; font-size: 17px; } }
     </style>
-    <link rel="stylesheet" href="/scripts/theme.css">
-    <script>var _t=localStorage.getItem('theme');if(_t)document.documentElement.setAttribute('data-theme',_t);</script>
 </head>
 <body>
     <p class="back"><a href="/#reading-heading">← back</a></p>
@@ -55,6 +52,5 @@
     <p>I think this essay’s thesis is a pretty standard stance. However, most arguments I’ve heard for the thesis are along the lines of AI-generated content “interpolating” on its training data, thus not producing anything <em>truly</em> new. I sort of agree with this. </p>
 <p>I like one of Ted Chiang’s core arguments because it’s different than what I’ve heard previously. The TLDR is that an integral aspect of art is making the little decisions (e.g. “should I describe a character as ‘flamboyant’ or ‘over-the-top’ in this sentence?”) that distill the artist’s character into their work. On the other hand, the premise of products like Claude and ChatGPT is that you get out far more than you put in, meaning these little decisions are all being made for you.</p>
 <p>My opinions on the rest of his arguments are roughly evenly split between agreement and disagreement. </p>
-    <script src="/scripts/theme.js"></script>
 </body>
 </html>
