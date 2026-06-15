@@ -50,7 +50,35 @@
             --muted: #5b6470;
             --link: #1d4ed8;
             --border: rgba(29, 78, 216, 0.25);
+            --text-rgb: 31, 41, 55;
         }
+
+        [data-theme="dark"] .slideshow-viewport {
+            background: #2a3444;
+        }
+
+        [data-theme="dark"] .tag-article     { background: rgba(156, 163, 175, 0.15); color: #d1d5db; }
+        [data-theme="dark"] .tag-paper       { background: rgba(251, 191, 36, 0.15);  color: #fbbf24; }
+        [data-theme="dark"] .tag-blog        { background: rgba(147, 180, 248, 0.15); color: #93b4f8; }
+        [data-theme="dark"] .tag-book        { background: rgba(52, 211, 153, 0.15);  color: #34d399; }
+        [data-theme="dark"] .tag-short-story { background: rgba(251, 113, 133, 0.15); color: #fb7185; }
+
+        [data-theme="forest"] .slideshow-viewport {
+            background: #1e2a15;
+        }
+
+        [data-theme="forest"] .tag-article     { background: rgba(191, 183, 141, 0.12); color: #BFB78D; }
+        [data-theme="forest"] .tag-paper       { background: rgba(240, 150, 92, 0.15);  color: #F0965C; }
+        [data-theme="forest"] .tag-blog        { background: rgba(107, 144, 215, 0.15); color: #6B90D7; }
+        [data-theme="forest"] .tag-book        { background: rgba(86, 116, 54, 0.2);    color: #91bb68; }
+        [data-theme="forest"] .tag-short-story { background: rgba(240, 150, 92, 0.12);  color: #F0965C; }
+
+        [data-theme="forest"] .filter-btn[data-filter="notes"].active       { background: #BFB78D; color: #2A3720; border-color: #BFB78D; }
+        [data-theme="forest"] .filter-btn[data-filter="Article"].active     { background: #BFB78D; color: #2A3720; border-color: #BFB78D; }
+        [data-theme="forest"] .filter-btn[data-filter="Paper"].active       { background: #F0965C; color: #fff;    border-color: #F0965C; }
+        [data-theme="forest"] .filter-btn[data-filter="Blog"].active        { background: #6B90D7; color: #fff;    border-color: #6B90D7; }
+        [data-theme="forest"] .filter-btn[data-filter="Book"].active        { background: #567436; color: #fff;    border-color: #567436; }
+        [data-theme="forest"] .filter-btn[data-filter="Short Story"].active { background: #F0965C; color: #fff;    border-color: #F0965C; }
 
         * {
             box-sizing: border-box;
@@ -75,12 +103,19 @@
             width: 100%;
         }
 
+        .name-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0 0 14px;
+        }
+
         h1 {
             font-family: "Peachy", Georgia, serif;
             font-weight: normal;
             font-size: clamp(2.75rem, 7vw, 3.75rem);
             line-height: 1.15;
-            margin: 0 0 14px;
+            margin: 0;
             letter-spacing: -0.01em;
         }
 
@@ -155,7 +190,7 @@
             max-height: 300px;
             overflow: hidden;
             background: #f3f4f6;
-            border: 1px solid rgba(31, 41, 55, 0.08);
+            border: 1px solid rgba(var(--text-rgb), 0.08);
         }
 
         #slideshow-image {
@@ -181,7 +216,7 @@
 
         .slideshow-button {
             appearance: none;
-            border: 1px solid rgba(31, 41, 55, 0.12);
+            border: 1px solid rgba(var(--text-rgb), 0.12);
             background: transparent;
             color: var(--text);
             font: inherit;
@@ -193,8 +228,8 @@
         }
 
         .slideshow-button:hover {
-            background: rgba(31, 41, 55, 0.04);
-            border-color: rgba(31, 41, 55, 0.2);
+            background: rgba(var(--text-rgb), 0.04);
+            border-color: rgba(var(--text-rgb), 0.2);
         }
 
         @media (max-width: 600px) {
@@ -223,12 +258,12 @@
             align-items: flex-start;
             gap: 10px;
             padding: 10px 0;
-            border-bottom: 1px solid rgba(31, 41, 55, 0.07);
+            border-bottom: 1px solid rgba(var(--text-rgb), 0.07);
             font-size: 0.95rem;
         }
 
         .reading-item:first-child {
-            border-top: 1px solid rgba(31, 41, 55, 0.07);
+            border-top: 1px solid rgba(var(--text-rgb), 0.07);
         }
 
         .reading-indicator {
@@ -314,7 +349,7 @@
 
         .filter-btn {
             appearance: none;
-            border: 1px solid rgba(31, 41, 55, 0.12);
+            border: 1px solid rgba(var(--text-rgb), 0.12);
             background: transparent;
             color: var(--muted);
             font: inherit;
@@ -326,8 +361,8 @@
         }
 
         .filter-btn:hover {
-            background: rgba(31, 41, 55, 0.05);
-            border-color: rgba(31, 41, 55, 0.2);
+            background: rgba(var(--text-rgb), 0.05);
+            border-color: rgba(var(--text-rgb), 0.2);
         }
 
         .filter-btn[data-filter="notes"].active       { background: #1f2937; color: #fcfcf8; border-color: #1f2937; }
@@ -353,10 +388,18 @@
         .tag-book        { background: rgba(5, 150, 105, 0.10);   color: #065f46; }
         .tag-short-story { background: rgba(220, 38, 38, 0.10);   color: #991b1b; }
     </style>
+    <link rel="stylesheet" href="/scripts/theme.css">
+    <script>var _t=localStorage.getItem('theme');if(_t)document.documentElement.setAttribute('data-theme',_t);</script>
 </head>
 <body>
     <main>
-        <h1>Ishaan Ganti</h1>
+        <div class="name-row">
+            <h1>Ishaan Ganti</h1>
+            <div class="theme-buttons">
+                <button id="forest-toggle" class="theme-toggle" aria-label="Toggle forest theme"></button>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode"></button>
+            </div>
+        </div>
 
         <p class="intro">
             I'm an undergraduate at Brown studying applied mathematics, physics, and computer science.
@@ -561,5 +604,6 @@ systems</a></span><span class="reading-author">Eleftherios Mainas (et. al)</span
             });
         })();
     </script>
+    <script src="/scripts/theme.js"></script>
 </body>
 </html>

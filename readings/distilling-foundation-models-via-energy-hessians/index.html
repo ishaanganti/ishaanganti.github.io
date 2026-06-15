@@ -15,6 +15,7 @@
             --muted: #5b6470;
             --link: #1d4ed8;
             --border: rgba(29, 78, 216, 0.25);
+            --text-rgb: 31, 41, 55;
         }
         * { box-sizing: border-box; }
         body {
@@ -40,15 +41,18 @@
         li { margin-bottom: 4px; }
         li ul, li ol { margin: 4px 0 0; }
         blockquote { border-left: 3px solid var(--border); margin: 0 0 16px; padding: 4px 0 4px 16px; color: var(--muted); font-style: italic; }
-        hr { border: none; border-top: 1px solid rgba(31,41,55,0.1); margin: 32px 0; }
-        code { font-family: monospace; font-size: 0.88em; background: rgba(31,41,55,0.06); padding: 1px 4px; border-radius: 3px; }
+        hr { border: none; border-top: 1px solid rgba(var(--text-rgb),0.1); margin: 32px 0; }
+        code { font-family: monospace; font-size: 0.88em; background: rgba(var(--text-rgb),0.06); padding: 1px 4px; border-radius: 3px; }
         @media (max-width: 600px) { body { margin: 40px auto; font-size: 17px; } }
     </style>
+    <link rel="stylesheet" href="/scripts/theme.css">
+    <script>var _t=localStorage.getItem('theme');if(_t)document.documentElement.setAttribute('data-theme',_t);</script>
 </head>
 <body>
     <p class="back"><a href="/#reading-heading">← back</a></p>
     <h1>Distilling Foundation Models via Energy Hessians</h1>
     <p class="meta">Ishan Amin (et. al) &middot; Paper &middot; June 11, 2026</p>
     <ul><li>We don’t actually need the full Hessian for distillation; randomly selected rows work? This is really useful if true<ul><li>Picking the rows smartly could do something here (e.g. normal modes?)</li></ul></li><li><strong>Numerical Hessians seem to be good, too</strong><ul><li>Don’t have to have source code to run <code>autograd</code> myself! Nice for heavily wrapped models</li></ul></li></ul>
+    <script src="/scripts/theme.js"></script>
 </body>
 </html>

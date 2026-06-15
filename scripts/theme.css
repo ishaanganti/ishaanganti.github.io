@@ -1,0 +1,73 @@
+html[data-theme="dark"] {
+    --bg: #1f2937;
+    --text: #fcfcf8;
+    --muted: #9aa5b1;
+    --subtle: #7a8898;
+    --link: #93b4f8;
+    --border: rgba(147, 180, 248, 0.3);
+    --link-border: rgba(147, 180, 248, 0.3);
+    --rule: rgba(252, 252, 248, 0.08);
+    --text-rgb: 252, 252, 248;
+}
+
+html[data-theme="forest"] {
+    --bg: #2A3720;
+    --text: #BFB78D;
+    --muted: #7a8c62;
+    --subtle: #6a7c52;
+    --link: #F0965C;
+    --border: rgba(240, 150, 92, 0.3);
+    --link-border: rgba(240, 150, 92, 0.3);
+    --rule: rgba(191, 183, 141, 0.12);
+    --text-rgb: 191, 183, 141;
+}
+
+.page-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.theme-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.theme-buttons-fixed {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.theme-toggle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.theme-toggle:focus-visible {
+    outline: 2px solid var(--link, #1d4ed8);
+    outline-offset: 3px;
+}
+
+/* Dark mode button: dark always, turns light when dark mode is active */
+#theme-toggle                          { background: #1f2937; }
+html[data-theme="dark"]  #theme-toggle { background: #fcfcf8; }
+html[data-theme="forest"] #theme-toggle {
+    background: #1f2937;
+    box-shadow: 0 0 0 2px rgba(191, 183, 141, 0.4);
+}
+
+/* Forest button: green always, turns tan when forest mode is active */
+#forest-toggle                           { background: #567436; }
+html[data-theme="forest"] #forest-toggle { background: #BFB78D; }
