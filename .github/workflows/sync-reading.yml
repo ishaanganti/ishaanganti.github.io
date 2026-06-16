@@ -19,7 +19,9 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DB_ID: ${{ secrets.NOTION_DB_ID }}
-        run: python scripts/sync_reading.py
+        run: |
+          git pull --rebase origin main
+          python scripts/sync_reading.py
       - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
