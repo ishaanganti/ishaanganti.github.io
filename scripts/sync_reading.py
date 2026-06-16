@@ -47,6 +47,9 @@ def plain_text(rich_text):
 def rich_to_html(rich_text):
     parts = []
     for t in rich_text:
+        if t.get("type") == "equation":
+            parts.append(f'\\({t["equation"]["expression"]}\\)')
+            continue
         text = html.escape(t["plain_text"])
         ann = t.get("annotations", {})
         if ann.get("bold"):
@@ -96,6 +99,8 @@ def blocks_to_html(blocks):
                 i += 1
             out.append(f"<ol>{''.join(items)}</ol>")
             continue
+        elif t == "equation":
+            out.append(f"<p>\\[{b['equation']['expression']}\\]</p>")
         elif t == "quote":
             out.append(f"<blockquote>{rich_to_html(b['quote']['rich_text'])}</blockquote>")
         elif t == "divider":
@@ -145,6 +150,7 @@ def note_page(title, author, date_str, reading_type, body_html):
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/scripts/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
     <script>var _t=localStorage.getItem('theme');if(_t)document.documentElement.setAttribute('data-theme',_t);</script>
     <style>
         :root {{
@@ -189,6 +195,8 @@ def note_page(title, author, date_str, reading_type, body_html):
     <p class="meta">{meta}</p>
     {body_html}
     <script src="/scripts/theme.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{{delimiters:[{{left:'$$',right:'$$',display:true}},{{left:'\\\\(',right:'\\\\)',display:false}},{{left:'\\\\[',right:'\\\\]',display:true}}]}})"></script>
 </body>
 </html>"""
 
