@@ -22,6 +22,10 @@ html[data-theme="forest"] {
     --text-rgb: 191, 183, 141;
 }
 
+::selection                          { background: rgba(29, 78, 216, 0.15); }
+html[data-theme="dark"] ::selection  { background: rgba(147, 180, 248, 0.25); }
+html[data-theme="forest"] ::selection { background: rgba(240, 150, 92, 0.25); }
+
 .page-nav {
     display: flex;
     align-items: center;
