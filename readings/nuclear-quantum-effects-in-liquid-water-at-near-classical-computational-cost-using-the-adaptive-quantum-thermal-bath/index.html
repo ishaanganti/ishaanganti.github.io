@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuclear Quantum Effects in liquid water at near classical computational cost using
+the adaptive Quantum Thermal Bath — Ishaan Ganti</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/scripts/theme.css">
+    <script>var _t=localStorage.getItem('theme');if(_t)document.documentElement.setAttribute('data-theme',_t);</script>
+    <style>
+        :root {
+            --bg: #fcfcf8;
+            --text: #1f2937;
+            --muted: #5b6470;
+            --link: #1d4ed8;
+            --border: rgba(29, 78, 216, 0.25);
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: "Inter", system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            max-width: 680px;
+            margin: 72px auto;
+            padding: 0 24px;
+            line-height: 1.65;
+            font-size: 18px;
+        }
+        a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 0.18em; text-decoration-color: var(--border); }
+        a:hover { text-decoration-color: var(--link); }
+        .back { font-size: 0.95rem; margin-bottom: 40px; }
+        .back a { color: var(--muted); }
+        h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); line-height: 1.1; margin: 0 0 8px; font-weight: 700; letter-spacing: -0.02em; }
+        .meta { font-size: 0.95rem; color: var(--muted); margin: 0 0 40px; }
+        h2 { font-size: 1.2rem; font-weight: 600; margin: 36px 0 8px; }
+        h3 { font-size: 1.05rem; font-weight: 600; margin: 24px 0 6px; }
+        p { margin: 0 0 16px; }
+        ul, ol { margin: 0 0 16px; padding-left: 24px; }
+        li { margin-bottom: 4px; }
+        li ul, li ol { margin: 4px 0 0; }
+        blockquote { border-left: 3px solid var(--border); margin: 0 0 16px; padding: 4px 0 4px 16px; color: var(--muted); font-style: italic; }
+        hr { border: none; border-top: 1px solid rgba(31,41,55,0.1); margin: 32px 0; }
+        code { font-family: monospace; font-size: 0.88em; background: rgba(31,41,55,0.06); padding: 1px 4px; border-radius: 3px; }
+        @media (max-width: 600px) { body { margin: 40px auto; font-size: 17px; } }
+    </style>
+</head>
+<body>
+    <p class="back"><a href="/#reading-heading">← back</a></p>
+    <h1>Nuclear Quantum Effects in liquid water at near classical computational cost using
+the adaptive Quantum Thermal Bath</h1>
+    <p class="meta">Nastasia Mauger (et. al) &middot; Paper &middot; June 16, 2026</p>
+    <p>In standard classical MD, each nuclear DoF couples to Gaussian noise that injects noise with amplitude \propto T</p>
+<p>For harmonic modes at low temp (T \to 0), we get average energy k_BT \to 0 via equipartition. Quantum mechanics gives ZPE \hbar \omega / 2 for harmonic modes \impliesenergies too low in low-temp regime with stiff modes (e.g. Hbonds).</p>
+<p><strong>Fix:</strong> change k_BT to a more general \theta(T, \omega) so that higher freq. modes can be injected with more energy (QTB method). But energy can leak between modes classically. </p>
+<p>Fluctuation dissipation theorem (FDT) captures this leakage, and by calculating the violation of FDT on the fly and adjusting energy injections accordingly, QTB can be fixed.</p>
+<p><strong>THIS MATTERS A LOT FOR WATER BECAUSE OF HBONDS </strong>(among other things). Results show that this makes water simulation much much better (e.g. densities, vaporization enthalpies, etc.). Could try using this thermostat with a NNP trained on loads of DFT calculations for better liquid simulation?</p>
+    <script src="/scripts/theme.js"></script>
+</body>
+</html>
