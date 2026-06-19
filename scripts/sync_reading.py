@@ -102,7 +102,10 @@ def blocks_to_html(blocks):
         elif t == "equation":
             out.append(f"<p>\\[{b['equation']['expression']}\\]</p>")
         elif t == "quote":
-            out.append(f"<blockquote>{rich_to_html(b['quote']['rich_text'])}</blockquote>")
+            content = rich_to_html(b["quote"]["rich_text"])
+            if b.get("has_children"):
+                content += blocks_to_html(fetch_blocks(b["id"]))
+            out.append(f"<blockquote>{content}</blockquote>")
         elif t == "divider":
             out.append("<hr>")
         i += 1
