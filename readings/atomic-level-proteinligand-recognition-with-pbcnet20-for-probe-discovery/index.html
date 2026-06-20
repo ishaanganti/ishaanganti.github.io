@@ -46,6 +46,21 @@ with PBCNet2.0 for probe discovery — Ishaan Ganti</title>
         blockquote { border-left: 3px solid var(--border); margin: 0 0 16px; padding: 4px 0 4px 16px; color: var(--muted); font-style: italic; }
         hr { border: none; border-top: 1px solid rgba(31,41,55,0.1); margin: 32px 0; }
         code { font-family: monospace; font-size: 0.88em; background: rgba(31,41,55,0.06); padding: 1px 4px; border-radius: 3px; }
+        mark { padding: 1px 2px; border-radius: 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+        .hl-yellow { background: #fef3c7; color: inherit; }
+        .hl-orange { background: #fed7aa; color: inherit; }
+        .hl-red { background: #fecaca; color: inherit; }
+        .hl-pink { background: #fbcfe8; color: inherit; }
+        .hl-purple { background: #e9d5ff; color: inherit; }
+        .hl-blue { background: #bfdbfe; color: inherit; }
+        .hl-green { background: #bbf7d0; color: inherit; }
+        .hl-brown { background: #d6b899; color: inherit; }
+        .hl-gray { background: #e5e7eb; color: inherit; }
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 0 20px; }
+        table { border-collapse: collapse; width: max-content; min-width: 100%; font-size: 0.9em; }
+        th, td { border: 1px solid rgba(31,41,55,0.15); padding: 10px 14px; text-align: left; vertical-align: top; min-width: 140px; max-width: 320px; }
+        thead th { background: rgba(31,41,55,0.06); font-weight: 600; }
+        tbody tr:nth-child(even) { background: rgba(31,41,55,0.025); }
         @media (max-width: 600px) { body { margin: 40px auto; font-size: 17px; } }
     </style>
 </head>
@@ -59,10 +74,9 @@ with PBCNet2.0 for probe discovery</h1>
 <h3>Architecture</h3>
 <ul><li>Siamese neural setup: both complexes passed through same embedding layer.<ul><li>MLP then takes the <em>difference of the embeddings</em> as input. This is a very intentional choice; taking both the individual embeddings and their difference concatenated was possible.</li></ul></li><li>The graphs for message passing are protein-ligand interaction-aware</li><li>The inductive bias via the 3x3 matrix decomposition is really nice, cool that it seems to work</li></ul>
 <h3>Data Curation</h3>
-<ul><li>BindingDB 2023.12 is used (~3 million affinity measurements)</li><li>Series of ligands are identified with Tanimoto similarity (0.4 threshold), after which docking is performed against a <strong>crystallized protein-ligand structure with a similar ligand to the series.</strong><ul><li>All data is then experimental binding affinity difference labels between docked structures, i.e. <strong>structure is obtained from docking, not experimentally.</strong></li></ul></li></ul>
+<ul><li>BindingDB 2023.12 is used (~3 million affinity measurements)</li><li>Series of ligands are identified with Tanimoto similarity (0.4 threshold), after which docking is performed against a <strong>crystallized protein-ligand structure with a similar ligand to the series.</strong><ul><li>All data is then experimental binding affinity difference labels between docked structures, i.e. <mark class="hl-yellow"><strong>structure is obtained from docking, not experimentally.</strong></mark></li></ul></li></ul>
 <h3>Criticisms</h3>
-<ol><li>The “almost FEP” claims are bad imo. This model almost surely suffers from the same <a href="https://x.com/CorinWagen/status/1932179641898336320">data contamination issues that plagued Boltz-2</a>. So saying things like <blockquote>Notably, PBCNet2.0 approaches the performance of the gold standard
-Schrödinger FEP+ (ρ = 0.70 and r = 0.70, ∆ρ = 0.03 and Δr = 0.04), with statistically indistinguishable ranking accuracy (P = 0.39).</blockquote>
+<ol><li>The “almost FEP” claims are bad imo. This model almost surely suffers from the same <a href="https://x.com/CorinWagen/status/1932179641898336320">data contamination issues that plagued Boltz-2</a>. So saying things like <blockquote>Notably, PBCNet2.0 approaches the performance of the gold standard<br>Schrödinger FEP+ (ρ = 0.70 and r = 0.70, ∆ρ = 0.03 and Δr = 0.04), with statistically indistinguishable ranking accuracy (P = 0.39).</blockquote>
 <p>feels tacky to me.</p></li><li>The authors mention enforcing prediction antisymmetry through training; ideally, the model should respect \(\text{prediction}(A, B) = - \text{prediction}(B, A)\). <strong>It’s not clear to me why this shouldn’t be baked into the architecture</strong>. Probably would have been an interesting ablation, but maybe not worth the time.</li></ol>
     <script src="/scripts/theme.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>

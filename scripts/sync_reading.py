@@ -50,7 +50,7 @@ def rich_to_html(rich_text):
         if t.get("type") == "equation":
             parts.append(f'\\({t["equation"]["expression"]}\\)')
             continue
-        text = html.escape(t["plain_text"])
+        text = html.escape(t["plain_text"]).replace("\n", "<br>")
         ann = t.get("annotations", {})
         if ann.get("bold"):
             text = f"<strong>{text}</strong>"
@@ -60,6 +60,12 @@ def rich_to_html(rich_text):
             text = f"<code>{text}</code>"
         if t.get("href"):
             text = f'<a href="{html.escape(t["href"])}">{text}</a>'
+        color = ann.get("color", "default")
+        if color.endswith("_background"):
+            cls = color[: -len("_background")]
+            text = f'<mark class="hl-{cls}">{text}</mark>'
+        elif color not in ("default", None):
+            text = f'<span class="c-{color}">{text}</span>'
         parts.append(text)
     return "".join(parts)
 
@@ -106,6 +112,24 @@ def blocks_to_html(blocks):
             if b.get("has_children"):
                 content += blocks_to_html(fetch_blocks(b["id"]))
             out.append(f"<blockquote>{content}</blockquote>")
+        elif t == "table":
+            meta = b["table"]
+            has_col_header = meta.get("has_column_header", False)
+            rows = fetch_blocks(b["id"])
+            html_rows = []
+            for r_idx, row in enumerate(rows):
+                cells = row["table_row"]["cells"]
+                tag = "th" if (has_col_header and r_idx == 0) else "td"
+                cell_html = "".join(
+                    f"<{tag}>{rich_to_html(cell)}</{tag}>" for cell in cells
+                )
+                html_rows.append(f"<tr>{cell_html}</tr>")
+            if has_col_header and html_rows:
+                thead = f"<thead>{html_rows[0]}</thead>"
+                tbody = f"<tbody>{''.join(html_rows[1:])}</tbody>" if html_rows[1:] else ""
+                out.append(f'<div class="table-wrap"><table>{thead}{tbody}</table></div>')
+            else:
+                out.append(f'<div class="table-wrap"><table><tbody>{"".join(html_rows)}</tbody></table></div>')
         elif t == "divider":
             out.append("<hr>")
         i += 1
@@ -189,6 +213,21 @@ def note_page(title, author, date_str, reading_type, body_html):
         blockquote {{ border-left: 3px solid var(--border); margin: 0 0 16px; padding: 4px 0 4px 16px; color: var(--muted); font-style: italic; }}
         hr {{ border: none; border-top: 1px solid rgba(31,41,55,0.1); margin: 32px 0; }}
         code {{ font-family: monospace; font-size: 0.88em; background: rgba(31,41,55,0.06); padding: 1px 4px; border-radius: 3px; }}
+        mark {{ padding: 1px 2px; border-radius: 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }}
+        .hl-yellow {{ background: #fef3c7; color: inherit; }}
+        .hl-orange {{ background: #fed7aa; color: inherit; }}
+        .hl-red {{ background: #fecaca; color: inherit; }}
+        .hl-pink {{ background: #fbcfe8; color: inherit; }}
+        .hl-purple {{ background: #e9d5ff; color: inherit; }}
+        .hl-blue {{ background: #bfdbfe; color: inherit; }}
+        .hl-green {{ background: #bbf7d0; color: inherit; }}
+        .hl-brown {{ background: #d6b899; color: inherit; }}
+        .hl-gray {{ background: #e5e7eb; color: inherit; }}
+        .table-wrap {{ overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 0 20px; }}
+        table {{ border-collapse: collapse; width: max-content; min-width: 100%; font-size: 0.9em; }}
+        th, td {{ border: 1px solid rgba(31,41,55,0.15); padding: 10px 14px; text-align: left; vertical-align: top; min-width: 140px; max-width: 320px; }}
+        thead th {{ background: rgba(31,41,55,0.06); font-weight: 600; }}
+        tbody tr:nth-child(even) {{ background: rgba(31,41,55,0.025); }}
         @media (max-width: 600px) {{ body {{ margin: 40px auto; font-size: 17px; }} }}
     </style>
 </head>

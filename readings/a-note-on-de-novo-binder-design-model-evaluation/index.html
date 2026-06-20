@@ -45,6 +45,21 @@
         blockquote { border-left: 3px solid var(--border); margin: 0 0 16px; padding: 4px 0 4px 16px; color: var(--muted); font-style: italic; }
         hr { border: none; border-top: 1px solid rgba(31,41,55,0.1); margin: 32px 0; }
         code { font-family: monospace; font-size: 0.88em; background: rgba(31,41,55,0.06); padding: 1px 4px; border-radius: 3px; }
+        mark { padding: 1px 2px; border-radius: 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+        .hl-yellow { background: #fef3c7; color: inherit; }
+        .hl-orange { background: #fed7aa; color: inherit; }
+        .hl-red { background: #fecaca; color: inherit; }
+        .hl-pink { background: #fbcfe8; color: inherit; }
+        .hl-purple { background: #e9d5ff; color: inherit; }
+        .hl-blue { background: #bfdbfe; color: inherit; }
+        .hl-green { background: #bbf7d0; color: inherit; }
+        .hl-brown { background: #d6b899; color: inherit; }
+        .hl-gray { background: #e5e7eb; color: inherit; }
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 0 20px; }
+        table { border-collapse: collapse; width: max-content; min-width: 100%; font-size: 0.9em; }
+        th, td { border: 1px solid rgba(31,41,55,0.15); padding: 10px 14px; text-align: left; vertical-align: top; min-width: 140px; max-width: 320px; }
+        thead th { background: rgba(31,41,55,0.06); font-weight: 600; }
+        tbody tr:nth-child(even) { background: rgba(31,41,55,0.025); }
         @media (max-width: 600px) { body { margin: 40px auto; font-size: 17px; } }
     </style>
 </head>
@@ -52,12 +67,12 @@
     <p class="back"><a href="/#reading-heading">← back</a></p>
     <h1>A note on de novo binder design model evaluation</h1>
     <p class="meta">Boltz Team &middot; Blog &middot; June 16, 2026</p>
-    <h3>main takeaways</h3>
+    <h3><mark class="hl-green">main takeaways</mark></h3>
 <p>Typical binder experiment setup is a target protein attached to a surface, then running a solution containing the proposed ligand over the surface. A device measures when the flow of the solution is interrupted (ideally binding).</p>
 <ol><li>Good curves (binders) look something like initial step-function response during binding, then a slow fall off once the solution flow stops (gradual unbinding, exponential decay). Should have peak response values positively related to binder concentration.</li><li>Bad curves: noisy, flat, changing concentration doesn’t matter.</li><li>Ambiguous curves: maybe not complete unbinding after solution flow stops, or different concentrations after solution flow stops don’t converge. Have some signal, but don’t clearly reflect one-binder-to-one-protein events. Non-exponential-decay dissociation fits here.</li></ol>
 <p>People fit curves to these response plots to attain affinities, but doing so for ambiguous curves results in misleading values.</p>
 <p>Flipping the assay is something you can do: attach the binder to the surface and run a solution of the target over it. Can help de-ambiguify type (3) curves.</p>
-<h3>personal thoughts</h3>
+<h3><mark class="hl-yellow">personal thoughts</mark></h3>
 <p>Nothing much negative. These are good standards. Maybe some shade thrown at Adaptv Bio and/or Chai lol</p>
     <script src="/scripts/theme.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>

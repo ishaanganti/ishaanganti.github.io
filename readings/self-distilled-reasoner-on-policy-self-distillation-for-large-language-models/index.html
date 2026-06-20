@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Few-step Cofolding with All-Atom Flow Maps — Ishaan Ganti</title>
+    <title>Self-Distilled Reasoner: On-Policy Self-Distillation for Large Language Models — Ishaan Ganti</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,9 +65,20 @@
 </head>
 <body>
     <p class="back"><a href="/#reading-heading">← back</a></p>
-    <h1>Few-step Cofolding with All-Atom Flow Maps</h1>
-    <p class="meta">Gianluca Scarpellini (et. al) &middot; Paper &middot; June 10, 2026</p>
-    <ul><li>Distilling protein cofolding and protein folding models seems like a super good idea. Maybe more the latter because cofolding models are kind of mid in comparison</li><li>Nicholas Boffi’s semigroup prescription for learning flow maps is really good (<a href="https://arxiv.org/abs/2505.18825">https://arxiv.org/abs/2505.18825</a>)</li><li>I don’t understand the “Reparameterizing to Noise-Level Space” bit in the distillation process, I need to figure this out</li></ul>
+    <h1>Self-Distilled Reasoner: On-Policy Self-Distillation for Large Language Models</h1>
+    <p class="meta">Siyan Zhao (et. al) &middot; Paper &middot; June 19, 2026</p>
+    <h3>Core Idea</h3>
+<p>This paper is really good. The core contribution is an approach to train LLMs to ‘think’ correctly (beyond stuff like SFT on CoT) <strong>using the same LLM, not a separate teacher. </strong>The teacher here is the same model but with a provided reference solution. Going through the example in Figure 2 of the paper is helpful (the table is horizontally scrollable):</p>
+<div class="table-wrap"><table><tbody><tr><td>Student context</td><td>Teacher context</td><td>Student next-token dist.</td><td>Teacher next-token dist.</td></tr><tr><td>Problem: find derivative of f(x) = 3x^2 + 2x - 5 at x = 2.<br><br>Answer: <br>f’(x) = </td><td>Problem: find derivative of f(x) = 3x^2 + 2x - 5 at x = 2.<br><br>Reference solution: f&#x27;(x)=6x+2, so f&#x27;(2)=14.<br><br>After understanding the reference solution, solve the problem:<br><br>Answer: <br>f’(x) = </td><td>p_s(next | problem, student_prefix)</td><td>p_t(next | problem, reference_solution, student_prefix)</td></tr></tbody></table></div>
+<p>Importantly, even though the same model is being used, since the teacher is also conditioned on the reference solution, its next-token distribution logits are different from the student.</p>
+<p>There is some subtlety in how this is actually implemented—it’s pretty much</p>
+<ol><li>the student generates a complete answer, \(\hat{y}\), by itself.</li><li>the model is re-run on the student context + \(\hat{y}\) <mark class="hl-green"><strong>with grad on</strong></mark> to get the logits.</li><li>the model is re-run on the teacher context + \(\hat{y}\) <mark class="hl-pink"><strong>with grad off</strong></mark> to get the teacher logits.</li><li>compare the two logit distributions at each point in the \(\hat{y}\) token generation, use some KL loss.</li><li><mark class="hl-yellow">backprop through </mark><mark class="hl-yellow"><strong>student only.</strong></mark></li></ol>
+<h3>Strengths</h3>
+<ul><li>“on policy” in that it directly steers based on the path the student took, not some concrete “expert” path.</li><li>only one model needed.</li><li>for problems where generating privileged information is not super hard (maybe math? since you can generate and verify easily with LLM + Lean, for example), this approach feels really good.</li></ul>
+<h3>Miscellaneous</h3>
+<p>Apparently clipping KL-divergence per token is practically very important because</p>
+<blockquote><p>stylistic tokens can exhibit higher KL divergence than math-related tokens, causing them to dominate the training signal.</p></blockquote>
+<p>I’d suggest just reading this part of the paper (see sec 4.3.3, figure 4, and table 5).</p>
     <script src="/scripts/theme.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]})"></script>
