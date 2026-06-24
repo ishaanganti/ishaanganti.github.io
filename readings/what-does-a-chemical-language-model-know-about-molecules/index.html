@@ -58,7 +58,8 @@
     <p class="back"><a href="/#reading-heading">← back</a></p>
     <h1>What Does a Chemical Language Model Know About Molecules?</h1>
     <p class="meta">Christian Kenneth (et. al) &middot; Paper &middot; June 23, 2026</p>
-    <h1>Overview</h1>
+    <p>not much. lol</p>
+<h1>Overview</h1>
 <p>Studies chemical language models (cLM), which are trained like BERT on string representations of molecules (e.g. SMILES). Uses MolFormer-10. General approach:</p>
 <ol><li>Train several k-SAE on selected transformer layers by putting complexes through MolFormer-10 and taking embeddings at selected layers.<ol><li>Converts dense token vector → sparse combination of learned features</li></ol></li><li>Interpret SAE features by checking what makes them activate<ol><li>e.g. <code>C=O</code> , aromatic carbon, etc.</li></ol></li><li>Match features to known chemical patterns using SMARTS (think regex for chemical structures)<ol><li>match is determined by F1 score, factoring in both precision (how many hits are correct) and recall (how many correct options were hits)</li></ol></li></ol>
 <p><em>I think this approach is pretty good, though something about training a k-SAE on layer representations as opposed to using these representations more “directly” leaves a mildly bitter taste in my mouth</em>.<em> What can you do, I guess.</em></p>
@@ -68,7 +69,7 @@
 <ul><li>Fig 1b is cool: fewer k-SAE features correspond to atom-only features as the layer number increases. Loosely suggests the model’s representations move toward “atom X is playing some role in chemical context Y”</li><li>Fig 1a suggests later layers learn more “mixed” chemical representations, see paper</li></ul>
 <p><mark class="hl-red">SMILES ORDER MATTERS A LOT:</mark></p>
 <blockquote><p><mark class="hl-red">Generally, we find that the median Jaccard and cosine similarities for invalid SMILES are higher compared to non-canonical SMILES, suggesting that latent representations are more robust to invalid SMILES than to non-canonical SMILES.</mark></p></blockquote>
-<p><mark class="hl-red">THIS IS BAD.</mark> See figures 7 and 8. Figure 10 is super important: early layer position latents affect final-layer molecular representations. This is VERY BAD since SMILES strings change depending on the initial atom you BFS from.</p>
+<p><mark class="hl-red">THIS IS BAD.</mark><mark class="hl-default"> </mark>See figures 7 and 8. Figure 10 is super important: early layer <a href="/p/38802030da158094af11d7e1ff569611#38902030da1580499851feb92fef4e00">position latents</a> affect final-layer molecular representations. This is VERY BAD since SMILES strings change depending on the initial atom you BFS from.</p>
 <h2>Position Latents</h2>
 <ul><li>Positional latents (latents that loosely encode atom positions in SMILES string) activate more in earlier layers, less later on<ul><li>This is consistent with intuition</li><li>Fig 4 is <em>super</em> nice: for each latent, \(\rho\) is the correlation between activation strength and token position, then we plot the distribution of \(\rho\)’s (so one per latent) for each of the considered frames. Result is peaks at higher \(\rho\) early on, most of the \(\rho\) concentrated at 0 by layer 12.</li></ul></li></ul>
     <script src="/scripts/theme.js"></script>
