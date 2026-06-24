@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Does a Chemical Language Model Know About Molecules? — Ishaan Ganti</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/scripts/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script>var _t=localStorage.getItem('theme');if(_t)document.documentElement.setAttribute('data-theme',_t);</script>
+    <style>
+        :root {
+            --bg: #fcfcf8;
+            --text: #1f2937;
+            --muted: #5b6470;
+            --link: #1d4ed8;
+            --border: rgba(29, 78, 216, 0.25);
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: "Inter", system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            max-width: 680px;
+            margin: 72px auto;
+            padding: 0 24px;
+            line-height: 1.65;
+            font-size: 18px;
+        }
+        a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 0.18em; text-decoration-color: var(--border); }
+        a:hover { text-decoration-color: var(--link); }
+        .back { font-size: 0.95rem; margin-bottom: 40px; }
+        .back a { color: var(--muted); }
+        h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); line-height: 1.1; margin: 0 0 8px; font-weight: 700; letter-spacing: -0.02em; }
+        .meta { font-size: 0.95rem; color: var(--muted); margin: 0 0 40px; }
+        h2 { font-size: 1.2rem; font-weight: 600; margin: 36px 0 8px; }
+        h3 { font-size: 1.05rem; font-weight: 600; margin: 24px 0 6px; }
+        p { margin: 0 0 16px; }
+        ul, ol { margin: 0 0 16px; padding-left: 24px; }
+        li { margin-bottom: 4px; }
+        li ul, li ol { margin: 4px 0 0; }
+        blockquote { border-left: 3px solid var(--border); margin: 0 0 16px; padding: 4px 0 4px 16px; color: var(--muted); font-style: italic; }
+        hr { border: none; border-top: 1px solid rgba(31,41,55,0.1); margin: 32px 0; }
+        code { font-family: monospace; font-size: 0.88em; background: rgba(31,41,55,0.06); padding: 1px 4px; border-radius: 3px; }
+        mark { padding: 1px 2px; border-radius: 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+        .hl-yellow { background: #fef3c7; color: inherit; }
+        .hl-orange { background: #fed7aa; color: inherit; }
+        .hl-red { background: #fecaca; color: inherit; }
+        .hl-pink { background: #fbcfe8; color: inherit; }
+        .hl-purple { background: #e9d5ff; color: inherit; }
+        .hl-blue { background: #bfdbfe; color: inherit; }
+        .hl-green { background: #bbf7d0; color: inherit; }
+        .hl-brown { background: #d6b899; color: inherit; }
+        .hl-gray { background: #e5e7eb; color: inherit; }
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 0 20px; }
+        table { border-collapse: collapse; width: max-content; min-width: 100%; font-size: 0.9em; }
+        th, td { border: 1px solid rgba(31,41,55,0.15); padding: 10px 14px; text-align: left; vertical-align: top; min-width: 140px; max-width: 320px; }
+        thead th { background: rgba(31,41,55,0.06); font-weight: 600; }
+        tbody tr:nth-child(even) { background: rgba(31,41,55,0.025); }
+        @media (max-width: 600px) { body { margin: 40px auto; font-size: 17px; } }
+    </style>
+</head>
+<body>
+    <p class="back"><a href="/#reading-heading">← back</a></p>
+    <h1>What Does a Chemical Language Model Know About Molecules?</h1>
+    <p class="meta">Christian Kenneth (et. al) &middot; Paper &middot; June 23, 2026</p>
+    <h1>Overview</h1>
+<p>Studies chemical language models (cLM), which are trained like BERT on string representations of molecules (e.g. SMILES). Uses MolFormer-10. General approach:</p>
+<ol><li>Train several k-SAE on selected transformer layers by putting complexes through MolFormer-10 and taking embeddings at selected layers.<ol><li>Converts dense token vector → sparse combination of learned features</li></ol></li><li>Interpret SAE features by checking what makes them activate<ol><li>e.g. <code>C=O</code> , aromatic carbon, etc.</li></ol></li><li>Match features to known chemical patterns using SMARTS (think regex for chemical structures)<ol><li>match is determined by F1 score, factoring in both precision (how many hits are correct) and recall (how many correct options were hits)</li></ol></li></ol>
+<p><em>I think this approach is pretty good, though something about training a k-SAE on layer representations as opposed to using these representations more “directly” leaves a mildly bitter taste in my mouth</em>.<em> What can you do, I guess.</em></p>
+<h1>Key Findings</h1>
+<p><mark class="hl-yellow"><strong>High-level</strong></mark><mark class="hl-yellow">: nothing here is really clean, everything is pretty messy and entangled, i’m cherry-picking the more interpretable results. read all of the following takeaways with this in mind.</mark></p>
+<h2>“Understanding”</h2>
+<ul><li>Fig 1b is cool: fewer k-SAE features correspond to atom-only features as the layer number increases. Loosely suggests the model’s representations move toward “atom X is playing some role in chemical context Y”</li><li>Fig 1a suggests later layers learn more “mixed” chemical representations, see paper</li></ul>
+<p><mark class="hl-red">SMILES ORDER MATTERS A LOT:</mark></p>
+<blockquote><p><mark class="hl-red">Generally, we find that the median Jaccard and cosine similarities for invalid SMILES are higher compared to non-canonical SMILES, suggesting that latent representations are more robust to invalid SMILES than to non-canonical SMILES.</mark></p></blockquote>
+<p><mark class="hl-red">THIS IS BAD.</mark><mark class="hl-default"> See figures 7 and 8. Figure 10 is super important: early layer </mark><mark class="hl-default"><a href="/p/38802030da158094af11d7e1ff569611#38902030da1580499851feb92fef4e00">position latents</a></mark><mark class="hl-default"> affect final-layer molecular representations. This is VERY BAD since SMILES strings change depending on the initial atom you BFS from.</mark></p>
+<h2>Position Latents</h2>
+<ul><li>Positional latents (latents that loosely encode atom positions in SMILES string) activate more in earlier layers, less later on<ul><li>This is consistent with intuition</li><li>Fig 4 is <em>super</em> nice: for each latent, \(\rho\) is the correlation between activation strength and token position, then we plot the distribution of \(\rho\)’s (so one per latent) for each of the considered frames. Result is peaks at higher \(\rho\) early on, most of the \(\rho\) concentrated at 0 by layer 12.</li></ul></li></ul>
+    <script src="/scripts/theme.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]})"></script>
+</body>
+</html>
