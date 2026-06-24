@@ -75,3 +75,36 @@ html[data-theme="forest"] #theme-toggle {
 /* Forest button: green always, turns tan when forest mode is active */
 #forest-toggle                           { background: #567436; }
 html[data-theme="forest"] #forest-toggle { background: #BFB78D; }
+
+/* Notion highlight colours — light mode defaults */
+.hl-yellow { background: #fef3c7; color: #1f2937; }
+.hl-orange { background: #fed7aa; color: #1f2937; }
+.hl-red    { background: #fecaca; color: #1f2937; }
+.hl-pink   { background: #fbcfe8; color: #1f2937; }
+.hl-purple { background: #e9d5ff; color: #1f2937; }
+.hl-blue   { background: #bfdbfe; color: #1f2937; }
+.hl-green  { background: #bbf7d0; color: #1f2937; }
+.hl-brown  { background: #d6b899; color: #1f2937; }
+.hl-gray   { background: #e5e7eb; color: #1f2937; }
+
+/* Dark theme overrides — rich saturated backgrounds so light text remains readable */
+html[data-theme="dark"] .hl-yellow { background: #854d0e; color: #fef3c7; }
+html[data-theme="dark"] .hl-orange { background: #9a3412; color: #fed7aa; }
+html[data-theme="dark"] .hl-red    { background: #991b1b; color: #fecaca; }
+html[data-theme="dark"] .hl-pink   { background: #9d174d; color: #fbcfe8; }
+html[data-theme="dark"] .hl-purple { background: #6b21a8; color: #e9d5ff; }
+html[data-theme="dark"] .hl-blue   { background: #1e3a8a; color: #bfdbfe; }
+html[data-theme="dark"] .hl-green  { background: #14532d; color: #bbf7d0; }
+html[data-theme="dark"] .hl-brown  { background: #431407; color: #d6b899; }
+html[data-theme="dark"] .hl-gray   { background: #374151; color: #e5e7eb; }
+
+/* Forest theme overrides — same principle as dark */
+html[data-theme="forest"] .hl-yellow { background: #854d0e; color: #fef3c7; }
+html[data-theme="forest"] .hl-orange { background: #9a3412; color: #fed7aa; }
+html[data-theme="forest"] .hl-red    { background: #991b1b; color: #fecaca; }
+html[data-theme="forest"] .hl-pink   { background: #9d174d; color: #fbcfe8; }
+html[data-theme="forest"] .hl-purple { background: #6b21a8; color: #e9d5ff; }
+html[data-theme="forest"] .hl-blue   { background: #1e3a8a; color: #bfdbfe; }
+html[data-theme="forest"] .hl-green  { background: #14532d; color: #bbf7d0; }
+html[data-theme="forest"] .hl-brown  { background: #431407; color: #d6b899; }
+html[data-theme="forest"] .hl-gray   { background: #374151; color: #e5e7eb; }
