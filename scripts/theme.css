@@ -77,7 +77,7 @@ html[data-theme="forest"] #theme-toggle {
 html[data-theme="forest"] #forest-toggle { background: #BFB78D; }
 
 /* Notion highlight colours — light mode defaults */
-.hl-default { background: transparent; }
+.hl-default { background: var(--bg); color: var(--text); }
 .hl-yellow { background: #fef3c7; color: #1f2937; }
 .hl-orange { background: #fed7aa; color: #1f2937; }
 .hl-red    { background: #fecaca; color: #1f2937; }
