@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero-shot design of drug-binding proteins via neural iterative selection−expansion — Ishaan Ganti</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/scripts/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script>var _t=localStorage.getItem('theme');if(_t)document.documentElement.setAttribute('data-theme',_t);</script>
+    <style>
+        :root {
+            --bg: #fcfcf8;
+            --text: #1f2937;
+            --muted: #5b6470;
+            --link: #1d4ed8;
+            --border: rgba(29, 78, 216, 0.25);
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: "Inter", system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            max-width: 680px;
+            margin: 72px auto;
+            padding: 0 24px;
+            line-height: 1.65;
+            font-size: 18px;
+        }
+        a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 0.18em; text-decoration-color: var(--border); }
+        a:hover { text-decoration-color: var(--link); }
+        .back { font-size: 0.95rem; margin-bottom: 40px; }
+        .back a { color: var(--muted); }
+        h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); line-height: 1.1; margin: 0 0 8px; font-weight: 700; letter-spacing: -0.02em; }
+        .meta { font-size: 0.95rem; color: var(--muted); margin: 0 0 40px; }
+        h2 { font-size: 1.2rem; font-weight: 600; margin: 36px 0 8px; }
+        h3 { font-size: 1.05rem; font-weight: 600; margin: 24px 0 6px; }
+        p { margin: 0 0 16px; }
+        ul, ol { margin: 0 0 16px; padding-left: 24px; }
+        li { margin-bottom: 4px; }
+        li ul, li ol { margin: 4px 0 0; }
+        blockquote { border-left: 3px solid var(--border); margin: 0 0 16px; padding: 4px 0 4px 16px; color: var(--muted); font-style: italic; }
+        hr { border: none; border-top: 1px solid rgba(31,41,55,0.1); margin: 32px 0; }
+        code { font-family: monospace; font-size: 0.88em; background: rgba(31,41,55,0.06); padding: 1px 4px; border-radius: 3px; }
+        mark { padding: 1px 2px; border-radius: 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 0 20px; }
+        table { border-collapse: collapse; width: max-content; min-width: 100%; font-size: 0.9em; }
+        th, td { border: 1px solid rgba(31,41,55,0.15); padding: 10px 14px; text-align: left; vertical-align: top; min-width: 140px; max-width: 320px; }
+        thead th { background: rgba(31,41,55,0.06); font-weight: 600; }
+        tbody tr:nth-child(even) { background: rgba(31,41,55,0.025); }
+        @media (max-width: 600px) { body { margin: 40px auto; font-size: 17px; } }
+    </style>
+</head>
+<body>
+    <p class="back"><a href="/#reading-heading">← back</a></p>
+    <h1>Zero-shot design of drug-binding proteins via neural iterative selection−expansion</h1>
+    <p class="meta">Benjamin Fry (et. al) &middot; Paper &middot; June 27, 2026</p>
+    <h1>Main Takeaways</h1>
+<ol><li>A self-consistent folding → inverse-folding loop can generate strong binders<ol><li><mark class="hl-green">Ligand self-consistency is the stronger screen than backbone self-consistency</mark></li></ol></li><li>Pretty easy to add ligand conditioning to inverse-folding models, not sure how I never thought about this lol</li><li><strong>Neural proofreading is really good:</strong> LASErMPNN can suggest mutations, to improve binding, which yielded some super good results.</li></ol>
+<h1>Model Approach</h1>
+<p>Neural Iterative Selection-Expansion (NISE): coordinate ascent over inverse-folding (LASErMPNN) and folding (Boltz-2, RFAA) models: </p>
+<p>\[P(\text{sequence} \mid \text{structure, ligand}) \to 
+P(\text{structure, ligand} \mid \text{sequence}) \\ \to P(\text{sequence} \mid \text{structure, ligand}) \to \ldots\]</p>
+<p><mark class="hl-yellow">Self-consistency hypothesis: complexes that are robust to this iteration are structurally sound → good binders.</mark><mark class="hl-default"> I’ve always felt this idea is pretty natural and nice. </mark></p>
+<ul><li>Start with docked complex, generate many sequences, then keep the high confidence ones, continue.<ul><li>probably need to tune hyperparameters here to not have combinatorial blowup? they used 35 rounds</li></ul></li></ul>
+<p>LASErMPNN is inverse-folding with a few main changes:</p>
+<ol><li>Condition on <mark class="hl-default">protein backbone </mark><mark class="hl-green">+ ligand atoms</mark><ol><li>pretrained ligand encoder for ligand atoms: </li></ol>
+<blockquote>The ligand node embeddings (<em>e</em>1, <em>e</em>2, etc) are taken from a pretrained ligand encoder (box labelled pretrained ligand encoder) and locked during training. The ligand encoder is trained to predict the atomic properties of ligands (such as the partial atomic charge) conditioned on atomic coordinates and elements.</blockquote></li><li>Predicts amino-acid identity <mark class="hl-green">+ sidechain dihedrals jointly</mark><ol><li>latter matters for bound complexes because overpacking is more relevant (as opposed to protein-only) and ligands mainly interact with sidechains anyway </li></ol>
+<blockquote>Autoregressive sampling (AS) is performed in turn for each L residue of the protein. Each new residue prediction is conditioned on previously decoded residue identities and their associated dihedral angles</blockquote></li></ol>
+<h1>Disorganized Notes</h1>
+<ul><li>Figure 1 (c) is kinda nuanced and partly obvious, partly not<ul><li>obviously ligand pLDDT will increase with ISE design iteration since that’s what’s being optimized against? since only high-confidence structures are recycled</li><li>sequence NLL is less direct, i guess, but the scale also seems really small? maybe i’m missing something</li><li>personally am not surprised by Rosetta minimization not doing that well, lots of my attempts at physicality interp with inverse folding models have shown me that these models are probably learning more statistical things than physical things</li></ul></li></ul>
+<blockquote>Iteratively selecting Rosetta-minimized structures by ligand energy and expanding them using sequence design with LASErMPNN did not reduce the NLL of designed sequences nor increase the pLDDT of ligands in predicted co-structures. This implies that these structures are not sufficiently altered to more strongly encode optimal sequences. These results show that both neural networks in NISE are important for optimization.</blockquote>
+<p>This is a good point; use cofolding as basin-escaping behavior, pretty much.</p>
+<ul><li>Figure 16 (supplementary material) is very cool: “Ligand confidence and self-consistency are correlated with experimental outcomes of binding”<ul><li>very unambiguous trend, but the systems are super prefiltered, so this is likely just an especially nice case. definitely not indicative of some general statement like ‘ligand pLDDT generally predicts binder success’</li></ul></li><li>lots of actual binder validation (experimental), so very strong here.</li><li><mark class="hl-red">model choice matters a lot</mark>, especially for the cofolding part of the workflow; this is a workflow-limiting factor: </li></ul>
+<blockquote>NISE is agnostic to the specific networks used; as these models improve, so will NISE. Indeed, a RFAA-based assessment would have led us to discard our apixaban binders (Supplementary Fig. 36); the use of Boltz-2 was important to select binders for experimental testing. </blockquote>
+<ul><li>Figure 4 is so cool. Really insane that the suggested mutations were physically realized and confirmed 100x stronger binding.</li></ul>
+    <script src="/scripts/theme.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]})"></script>
+</body>
+</html>
