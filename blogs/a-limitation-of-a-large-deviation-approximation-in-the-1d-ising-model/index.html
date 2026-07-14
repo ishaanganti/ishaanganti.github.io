@@ -6,63 +6,23 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="A limitation of a large-deviation approximation in the 1D Ising model" name="description"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/scripts/theme.css">
+<link rel="stylesheet" href="/scripts/blog.css">
+<script>var _t=localStorage.getItem('theme');if(_t)document.documentElement.setAttribute('data-theme',_t);</script>
+<script src="/scripts/theme.js" defer></script>
+<script src="/scripts/toc.js" defer></script>
 <title>a
 limitation of a large-deviation approximation in the 1D Ising model — Ishaan Ganti</title>
-<style>
-:root {
-  --ink:#181818; --muted:#686868; --rule:#dedede; --link:#2457a6; --note:#f7f7f5;
-  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  --serif:Georgia,"Times New Roman",serif
-}
-* { box-sizing:border-box }
-body { margin:0; background:#fff; color:var(--ink); font-family:var(--sans); font-size:18px; line-height:1.68; text-rendering:optimizeLegibility }
-a { color:var(--link); text-decoration-thickness:1px; text-underline-offset:3px }
-.page { width:min(1180px,calc(100% - 36px)); margin:auto }
-.top,header,article { width:740px; max-width:100%; margin:auto }
-.top { padding-top:30px; font-size:14px }
-header { padding:72px 0 42px; border-bottom:1px solid var(--rule) }
-h1 { margin:0; font:400 clamp(42px,7vw,68px)/1.04 var(--serif); letter-spacing:-.035em }
-.meta { margin-top:22px; color:var(--muted); font-size:14px }
-article { padding:48px 0 90px }
-p { margin:0 0 1.4em }
-article > p:first-child { color:var(--muted); font-size:15px; line-height:1.55 }
-blockquote { margin:0 0 42px; padding:0; border:0; font:21px/1.52 var(--serif) }
-blockquote p { margin:0 }
-h2 { margin:2.15em 0 .7em; font:400 37px/1.16 var(--serif); letter-spacing:-.02em }
-h3 { margin:2em 0 .7em; font-size:20px }
-ol,ul { padding-left:1.35em }
-li { margin-bottom:.35em }
-math { font-size:1.04em }
-math[display="block"] { display:block; margin:1.5em auto; overflow-x:auto; overflow-y:hidden }
-figure { margin:36px 0 42px }
-figure img { display:block; width:100%; height:auto }
-.sidenote { float:right; clear:right; width:230px; margin:4px -270px 18px 20px; color:var(--muted); font-size:13px; line-height:1.48 }
-.sidenote .n { color:var(--ink); font-weight:600; margin-right:5px }
-sup.note-ref { color:var(--link); font-size:11px; font-weight:600; margin-left:2px }
-hr { border:0; border-top:1px solid var(--rule); margin:52px 0 34px }
-@media(max-width:1100px) {
-  .sidenote { float:none; display:block; width:auto; margin:8px 0 24px; padding:12px 14px; border-left:2px solid var(--rule); background:var(--note) }
-}
-@media(max-width:640px) {
-  body { font-size:17px }
-  .page { width:min(100% - 24px,1180px) }
-  header { padding-top:46px }
-  article { padding-top:36px }
-  h2 { font-size:31px }
-}
-
-figcaption {
-  margin-top:10px;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.5;
-  font-style:italic;
-}
-</style>
 </head>
 <body>
 <div class="page">
-<nav class="top"><a href="../../blog-list.html">← Back to blog list</a></nav>
+<nav class="top page-nav">
+<a href="../../blog-list.html">← Back to blog list</a>
+<div class="theme-buttons">
+<button id="forest-toggle" class="theme-toggle" aria-label="Toggle forest theme"></button>
+<button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode"></button>
+</div>
+</nav>
 <header>
 <h1>a
 limitation of a large-deviation approximation in the 1D Ising model</h1>

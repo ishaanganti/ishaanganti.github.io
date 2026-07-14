@@ -8,6 +8,7 @@ html[data-theme="dark"] {
     --link-border: rgba(147, 180, 248, 0.3);
     --rule: rgba(252, 252, 248, 0.08);
     --text-rgb: 252, 252, 248;
+    --note: rgba(147, 180, 248, 0.08);
 }
 
 html[data-theme="forest"] {
@@ -20,6 +21,7 @@ html[data-theme="forest"] {
     --link-border: rgba(240, 150, 92, 0.3);
     --rule: rgba(191, 183, 141, 0.12);
     --text-rgb: 191, 183, 141;
+    --note: rgba(240, 150, 92, 0.08);
 }
 
 ::selection                          { background: rgba(29, 78, 216, 0.15); }

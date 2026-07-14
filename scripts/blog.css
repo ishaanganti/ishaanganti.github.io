@@ -1,0 +1,73 @@
+:root {
+  --bg: #fff;
+  --text: #181818;
+  --muted: #686868;
+  --rule: #dedede;
+  --link: #2457a6;
+  --note: #f7f7f5;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --serif: Georgia, "Times New Roman", serif;
+}
+
+* { box-sizing: border-box }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 18px; line-height: 1.68; text-rendering: optimizeLegibility }
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 3px }
+
+.page { width: min(1180px, calc(100% - 36px)); margin: auto }
+.top, header, article { width: 740px; max-width: 100%; margin: auto }
+.top { padding-top: 30px; font-size: 14px }
+header { padding: 72px 0 42px; border-bottom: 1px solid var(--rule) }
+h1 { margin: 0; font: 400 clamp(42px, 7vw, 68px)/1.04 var(--serif); letter-spacing: -.035em }
+.meta { margin-top: 22px; color: var(--muted); font-size: 14px }
+article { padding: 48px 0 90px }
+p { margin: 0 0 1.4em }
+article > p:first-child { color: var(--muted); font-size: 15px; line-height: 1.55 }
+blockquote { margin: 0 0 42px; padding: 0; border: 0; font: 21px/1.52 var(--serif) }
+blockquote p { margin: 0 }
+h2 { margin: 2.15em 0 .7em; font: 400 37px/1.16 var(--serif); letter-spacing: -.02em }
+h3 { margin: 1.4em 0 .5em; font-size: 20px }
+h2 + h3 { margin-top: .8em }
+ol, ul { padding-left: 1.35em }
+li { margin-bottom: .35em }
+math { font-size: 1.04em }
+math[display="block"] { display: block; margin: 1.5em auto; overflow-x: auto; overflow-y: hidden }
+figure { margin: 36px 0 42px }
+figure img { display: block; width: 100%; height: auto }
+figcaption { margin-top: 10px; color: var(--muted); font-size: 14px; line-height: 1.5; font-style: italic }
+figure:has(> figure) { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start }
+figure:has(> figure) > figure { flex: 1 1 280px; min-width: 0; margin: 0 }
+figure:has(> figure) > figcaption { flex-basis: 100%; margin-top: 6px }
+figure[data-layout="stacked"] { display: block }
+figure[data-layout="stacked"] > figure { flex: none; margin: 0 0 24px }
+.sidenote { float: right; clear: right; width: 230px; margin: 4px -270px 18px 20px; color: var(--muted); font-size: 13px; line-height: 1.48 }
+.sidenote .n { color: var(--text); font-weight: 600; margin-right: 5px }
+sup.note-ref { color: var(--link); font-size: 11px; font-weight: 600; margin-left: 2px }
+hr { border: 0; border-top: 1px solid var(--rule); margin: 52px 0 34px }
+
+pre { overflow-x: auto; padding: 14px 16px; background: var(--note); border: 1px solid var(--rule); border-radius: 4px; font-size: 13px; line-height: 1.5 }
+pre code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em }
+pre[data-caption]::before { content: attr(data-caption); display: block; font-style: italic; color: var(--muted); font-size: 14px; margin-bottom: 8px; font-family: var(--sans) }
+
+.toc { position: fixed; top: 96px; right: calc(50% + 400px); width: 200px; max-height: calc(100vh - 140px); overflow-y: auto; font-size: 13px; line-height: 1.4 }
+.toc nav { margin: 0 }
+.toc ul { list-style: none; padding: 0; margin: 0 }
+.toc li { margin: 0 }
+.toc a { display: block; color: var(--muted); text-decoration: none; padding: 3px 0 3px 12px; border-left: 2px solid transparent; transition: color .15s, border-color .15s }
+.toc a:hover { color: var(--text) }
+.toc a.active { color: var(--text); border-left-color: var(--link) }
+.toc li.toc-h3 a { padding-left: 24px; font-size: 12px }
+
+@media (max-width: 1180px) {
+  .toc { display: none }
+}
+@media (max-width: 1100px) {
+  .sidenote { float: none; display: block; width: auto; margin: 8px 0 24px; padding: 12px 14px; border-left: 2px solid var(--rule); background: var(--note) }
+}
+@media (max-width: 640px) {
+  body { font-size: 17px }
+  .page { width: min(100% - 24px, 1180px) }
+  header { padding-top: 46px }
+  article { padding-top: 36px }
+  h2 { font-size: 31px }
+}
