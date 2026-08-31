@@ -215,6 +215,7 @@
             line-height: 1.55;
             min-height: 1.5em;
         }
+        .slideshow-caption a { color: var(--link); }
 
         .slideshow-controls {
             display: flex;
@@ -413,16 +414,15 @@
         </div>
 
         <p class="intro">
-            I'm an undergraduate at Brown studying applied mathematics, physics, and computer science.
-            I'm interested in machine learning for biology and chemistry, quantum optics, and
-            molecular dynamics.
+            I'm a research engineer at Rowan and a student at Brown studying applied mathematics,
+            physics, and computer science.
             This site consolidates my writing, research, current work, and jumbled thoughts. I share various
             readings that interest me at the bottom of this page.
 
             <br><br>
             I've
             <a href="https://www.denver7.com/news/local-news/northfield-graduate-and-friends-bike-from-denver-to-nyc">biked from
-                Denver to New York City</a>, developed drug discovery tooling at <a href="https://rowansci.com/">Rowan</a>, and
+                Denver to New York City</a>, developed lots of drug discovery tooling at <a href="https://rowansci.com/">Rowan</a>, and
             <a href="https://arxiv.org/abs/2507.17339">done work in theoretical cavity QED</a> at MIT. 
         </p>
 
@@ -519,7 +519,12 @@ systems</a></span><span class="reading-author">Eleftherios Mainas (et. al)</span
             const token = ++renderToken;
             const slide = slides[currentSlide];
     
-            slideshowCaption.textContent = slide.caption || "";
+            if (slide.href) {
+                const linked = (slide.caption || "").replace(/[Aa] friend/, (m) => `<a href="${slide.href}" target="_blank" rel="noopener">${m}</a>`);
+                slideshowCaption.innerHTML = linked;
+            } else {
+                slideshowCaption.textContent = slide.caption || "";
+            }
     
             try {
                 const img = await preloadImage(slide.src);

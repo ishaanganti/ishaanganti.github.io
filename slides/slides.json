@@ -1,12 +1,24 @@
 [
     {
+      "src": "slides/IMG_0001.jpg",
+      "caption": "A friend (left) and I (right) at teamLab Borderless in Tokyo.",
+      "href": "https://shrishc.com/",
+      "alt": "."
+    },
+    {
       "src": "slides/IMG_4662.jpg",
       "caption": "A hike in Point Reyes, CA.",
       "alt": "."
     },
     {
+      "src": "slides/IMG_0002.jpg",
+      "caption": "A walkway in Tokyo, featuring a friend and I walking on the right.",
+      "href": "https://marcoya.ng/",
+      "alt": "."
+    },
+    {
       "src": "slides/ishno.jpg",
-      "caption": "A friend (left) and I (right) in Snowport, MA.",
+      "caption": "A friend and I in Snowport, MA.",
       "alt": "."
     },
     {
