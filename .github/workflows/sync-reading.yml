@@ -1,6 +1,11 @@
-name: Sync Reading List
+name: Sync Notion Content
 
 on:
+  push:
+    paths:
+      - 'scripts/sync_aeropress.py'
+      - 'scripts/sync_reading.py'
+      - '.github/workflows/sync-reading.yml'
   schedule:
     - cron: '0 * * * *'
   workflow_dispatch:
@@ -22,11 +27,17 @@ jobs:
         run: |
           git pull --rebase origin main
           python scripts/sync_reading.py
+      - name: Sync Aeropress experiments from Notion
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_AEROPRESS_PAGE_ID: 3e202030da15800e8ea8f1091728b540
+        run: python scripts/sync_aeropress.py
       - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html
+          git add aeropress.html
           [ -d readings ] && git add readings/ || true
           git diff --staged --quiet || git commit -m "sync: reading list from Notion"
           git push
