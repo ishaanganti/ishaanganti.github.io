@@ -311,7 +311,7 @@ def page_document(title, body):
     </style>
 </head>
 <body>
-    <p class="back"><a href="/">← back</a></p>
+    <p class="back"><a href="/misc.html">← back to misc</a></p>
     <header><h1>{html.escape(title)}</h1><p class="lede">journal of my aeropress endeavors</p></header>
     <main>{body}</main>
     <script src="/scripts/theme.js"></script>
