@@ -28,6 +28,7 @@ jobs:
           git pull --rebase origin main
           python scripts/sync_reading.py
       - name: Sync Aeropress experiments from Notion
+        continue-on-error: true
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_AEROPRESS_PAGE_ID: 3e202030da15800e8ea8f1091728b540
