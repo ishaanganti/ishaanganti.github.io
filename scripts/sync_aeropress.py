@@ -312,7 +312,7 @@ def page_document(title, body):
 </head>
 <body>
     <p class="back"><a href="/">← back</a></p>
-    <header><h1>{html.escape(title)}</h1><p class="lede">Recipes, variables, and tasting notes from an ongoing attempt to make a better cup.</p></header>
+    <header><h1>{html.escape(title)}</h1><p class="lede">journal of my aeropress endeavors</p></header>
     <main>{body}</main>
     <script src="/scripts/theme.js"></script>
 </body>
