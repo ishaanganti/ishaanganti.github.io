@@ -274,6 +274,7 @@ def page_document(title, body):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
     <meta name="description" content="Aeropress experiments and brewing notes by Ishaan Ganti.">
     <title>{html.escape(title)} — Ishaan Ganti</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
